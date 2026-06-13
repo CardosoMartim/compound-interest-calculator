@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Wealth Engine v3.3</title>
+    <title>Quantum Wealth Engine v3.4</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -18,14 +18,17 @@
             <p class="text-xs text-slate-500 mt-1 uppercase tracking-widest font-semibold">Borderless Macro Forecasting & Dynamic Fiscal Vectors</p>
         </header>
 
+        <!-- Chart Container -->
         <div class="bg-slate-900/30 backdrop-blur-xl border border-slate-800/80 p-6 rounded-3xl shadow-2xl relative">
             <div class="relative w-full h-72 md:h-96">
                 <canvas id="wealthChart"></canvas>
             </div>
         </div>
 
+        <!-- Input Control Panel -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             
+            <!-- Column 1: Active Income -->
             <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
                 <h2 class="text-xs font-bold uppercase text-cyan-400 tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>Active Income
@@ -44,6 +47,7 @@
                 </div>
             </div>
 
+            <!-- Column 2: Market & Dividends -->
             <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
                 <h2 class="text-xs font-bold uppercase text-emerald-400 tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Market & Dividends
@@ -68,15 +72,22 @@
                 </div>
             </div>
 
+            <!-- Column 3: Output Metrics -->
             <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
-                <h2 class="text-xs font-bold uppercase text-amber-400 tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>Engine Metrics
-                </h2>
+                <div>
+                    <h2 class="text-xs font-bold uppercase text-amber-400 tracking-widest border-b border-slate-800 pb-1 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>Engine Metrics
+                    </h2>
+                    <p class="text-[9px] text-slate-400 font-medium italic mt-1 leading-tight border-b border-slate-800/40 pb-2">
+                        *Nota: Os dividendos gerados acumulam sempre no motor e nunca são retirados para usufruto pessoal durante a projeção.
+                    </p>
+                </div>
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Horizon Simulation (Years)</label>
                     <input type="number" id="years" value="25" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition text-sm font-medium">
                 </div>
                 
+                <!-- Display Cards -->
                 <div class="grid grid-cols-2 gap-2 pt-1">
                     <div class="p-2 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
                         <p class="text-[9px] uppercase font-bold text-emerald-400 tracking-wider">Nominal Wealth</p>
@@ -99,6 +110,7 @@
 
         </div>
 
+        <!-- Advanced Parameters Drawer -->
         <details class="group bg-slate-900/30 backdrop-blur-md border border-slate-800/80 rounded-2xl p-4 transition-all duration-300">
             <summary class="flex items-center justify-between cursor-pointer list-none select-none">
                 <span class="text-xs font-bold uppercase tracking-widest text-slate-400 group-open:text-purple-400 transition-colors flex items-center gap-2">
@@ -111,20 +123,33 @@
             </summary>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 pt-4 border-t border-slate-800/60 transition-all">
+                
+                <!-- Left Sub-Grid: Tax Question & Volatility -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Dividend Tax Rate (%)</label>
-                        <input type="number" id="dividendTax" value="28" min="0" max="100" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium h-10">
+                    <!-- Interactive Tax Country Question -->
+                    <div class="flex flex-col justify-between">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">O teu país de residência cobra imposto sobre dividendos?</label>
+                        <div class="grid grid-cols-2 gap-2 h-10">
+                            <label class="flex items-center justify-center space-x-2 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer select-none transition hover:border-slate-700 p-2">
+                                <input type="radio" name="hasTax" value="yes" checked class="w-3.5 h-3.5 bg-slate-900 border-slate-800 text-purple-500 focus:ring-purple-500/50 focus:ring-offset-0">
+                                <span class="text-[11px] font-bold uppercase text-slate-300">Sim</span>
+                            </label>
+                            <label class="flex items-center justify-center space-x-2 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer select-none transition hover:border-slate-700 p-2">
+                                <input type="radio" name="hasTax" value="no" class="w-3.5 h-3.5 bg-slate-900 border-slate-800 text-purple-500 focus:ring-purple-500/50 focus:ring-offset-0">
+                                <span class="text-[11px] font-bold uppercase text-slate-300">Não</span>
+                            </label>
+                        </div>
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Market Volatility Vector</label>
-                        <select id="marketRegime" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-xs font-medium h-10">
+                        <select id="marketRegime" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-xs font-medium h-10 mt-3.5 sm:mt-5">
                             <option value="stable">Stable Engine (Linear Growth)</option>
                             <option value="volatile">Volatile Engine (Cyclical Shocks)</option>
                         </select>
                     </div>
                 </div>
                 
+                <!-- Right Sub-Grid: FIRE Objective & Advanced Real Wealth Switch -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">FIRE Monthly Goal (Real €)</label>
@@ -138,6 +163,7 @@
                     </div>
                 </div>
 
+                <!-- Inflation Input Node -->
                 <div id="inflationRateContainer" class="hidden md:col-span-2 bg-slate-950/40 border border-slate-800/60 p-4 rounded-xl">
                     <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Annual Inflation Rate (%)</label>
                     <input type="number" id="inflationRate" value="2.5" step="0.1" class="w-full sm:w-1/3 p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium">
@@ -203,7 +229,10 @@
             const dividendReinvest = parseFloat(document.getElementById('dividendReinvest').value) || 0;
             const years = parseInt(document.getElementById('years').value) || 0;
 
-            const dividendTax = parseFloat(document.getElementById('dividendTax').value) || 0;
+            // Dynamic evaluation of the context's tax radio parameters
+            const selectedTaxOption = document.querySelector('input[name="hasTax"]:checked').value;
+            const dynamicTaxRate = (selectedTaxOption === 'yes') ? 28 : 0; 
+            
             const marketRegime = document.getElementById('marketRegime').value;
             const fireTarget = parseFloat(document.getElementById('fireTarget').value) || 0;
             const enableInflation = document.getElementById('enableInflation').checked;
@@ -211,7 +240,6 @@
 
             const container = document.getElementById('inflationRateContainer');
             
-            // UI Toggle States based on inflation configuration
             if (enableInflation) {
                 container.classList.remove('hidden');
                 document.getElementById('realWealthTitle').className = "text-[9px] uppercase font-bold text-cyan-400 tracking-wider";
@@ -225,20 +253,20 @@
             let nominalBalance = initialCapital;
             let totalInvested = initialCapital;
             let currentMonthlySalary = netSalary;
-            let fireYearReached = "Off"; // Predefinição segura se desligado
+            let fireYearReached = "Off"; 
 
             let investedHistory = [initialCapital];
             let nominalHistory = [initialCapital];
             let realHistory = [initialCapital];
-            let nominalDivHistory = [Math.round(initialCapital * (dividendYield / 100) * (1 - (dividendTax / 100)))];
-            let realDivHistory = [Math.round(initialCapital * (dividendYield / 100) * (1 - (dividendTax / 100)))];
+            let nominalDivHistory = [Math.round(initialCapital * (dividendYield / 100) * (1 - (dynamicTaxRate / 100)))];
+            let realDivHistory = [Math.round(initialCapital * (dividendYield / 100) * (1 - (dynamicTaxRate / 100)))];
             let labels = ['Year 0'];
 
             const monthlyDividendRate = Math.pow(1 + (dividendYield / 100), 1 / 12) - 1;
-            const taxFactor = 1 - (dividendTax / 100);
+            const taxFactor = 1 - (dynamicTaxRate / 100);
 
             if (enableInflation && fireTarget > 0) {
-                fireYearReached = "Never"; // Só tenta calcular se o motor estiver ligado
+                fireYearReached = "Never"; 
             }
 
             for (let y = 1; y <= years; y++) {
@@ -267,7 +295,6 @@
                 let currentRealBalance = nominalBalance / accumulatedInflationFactor;
                 let currentRealDividends = dividendsThisYear / accumulatedInflationFactor;
 
-                // Verificação estritamente REAL do FIRE (Dividendos Líquidos Mensais Reais >= Meta Real)
                 if (enableInflation && fireYearReached === "Never" && (currentRealDividends / 12) >= fireTarget) {
                     fireYearReached = `Year ${y}`;
                 }
@@ -280,7 +307,6 @@
                 labels.push(`Year ${y}`);
             }
 
-            // Deep Horizon Execution Block - Só corre se a inflação estiver ativa e ainda não tiver atingido a meta
             if (enableInflation && fireYearReached === "Never" && fireTarget > 0) {
                 let deepNominalBalance = nominalBalance;
                 let deepSalary = currentMonthlySalary;
@@ -338,7 +364,6 @@
             document.getElementById('realValueDisplay').innerText = enableInflation ? finalReal.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }) : "Off";
             document.getElementById('annualDivDisplay').innerText = finalNominalDivs.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
             
-            // Saída Dinâmica do FIRE no DOM
             if (enableInflation) {
                 document.getElementById('fireMilestoneDisplay').innerText = fireYearReached;
                 document.getElementById('fireMilestoneDisplay').className = "text-xs font-black text-purple-400 mt-0.5";
@@ -351,6 +376,7 @@
         initChart();
         calculateSimulation();
 
+        // Target all inputs, selects, and radio shifts safely
         const allControls = document.querySelectorAll('input, select');
         allControls.forEach(control => {
             control.addEventListener('input', calculateSimulation);
