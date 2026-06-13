@@ -1,5 +1,3 @@
-As requested, here is the README.md file for your project, written in English.
-
 Quantum Wealth Engine
 The Quantum Wealth Engine is an advanced capital accumulation and financial independence (FIRE) simulator designed to operate in global contexts with dynamic fiscal and macroeconomic vectors.
 
