@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Wealth Engine v3.4</title>
+    <title>Quantum Wealth Engine v3.5</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -15,20 +15,17 @@
             <h1 class="text-3xl font-black tracking-wider bg-gradient-to-r from-cyan-400 via-purple-400 to-amber-400 bg-clip-text text-transparent uppercase">
                 Quantum Wealth Engine
             </h1>
-            <p class="text-xs text-slate-500 mt-1 uppercase tracking-widest font-semibold">Borderless Macro Forecasting & Dynamic Fiscal Vectors</p>
+            <p class="text-xs text-slate-500 mt-1 uppercase tracking-widest font-semibold">Worldwide Macro Forecasting & Dynamic Fiscal Vectors</p>
         </header>
 
-        <!-- Chart Container -->
         <div class="bg-slate-900/30 backdrop-blur-xl border border-slate-800/80 p-6 rounded-3xl shadow-2xl relative">
             <div class="relative w-full h-72 md:h-96">
                 <canvas id="wealthChart"></canvas>
             </div>
         </div>
 
-        <!-- Input Control Panel -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             
-            <!-- Column 1: Active Income -->
             <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
                 <h2 class="text-xs font-bold uppercase text-cyan-400 tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>Active Income
@@ -47,38 +44,30 @@
                 </div>
             </div>
 
-            <!-- Column 2: Market & Dividends -->
             <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
                 <h2 class="text-xs font-bold uppercase text-emerald-400 tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Market & Dividends
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Market Assets
                 </h2>
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Initial Capital (€)</label>
                     <input type="number" id="initialCapital" value="5000" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
                 </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Growth Anual (%)</label>
-                        <input type="number" id="marketGrowth" value="7" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Div Yield Anual (%)</label>
-                        <input type="number" id="dividendYield" value="3" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
-                    </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Annual Market Growth (%)</label>
+                    <input type="number" id="marketGrowth" value="7" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Dividends Reinvested (%)</label>
-                    <input type="number" id="dividendReinvest" value="100" min="0" max="100" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Annual Dividend Yield (%)</label>
+                    <input type="number" id="dividendYield" value="3" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
                 </div>
             </div>
 
-            <!-- Column 3: Output Metrics -->
             <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
                 <div>
                     <h2 class="text-xs font-bold uppercase text-amber-400 tracking-widest border-b border-slate-800 pb-1 flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>Engine Metrics
                     </h2>
-                    <p class="text-[9px] text-slate-400 font-medium italic mt-1 leading-tight border-b border-slate-800/40 pb-2">
+                    <p id="cashFlowDisclaimer" class="text-[9px] text-slate-400 font-medium italic mt-1 leading-tight border-b border-slate-800/40 pb-2">
                         *Nota: Os dividendos gerados acumulam sempre no motor e nunca são retirados para usufruto pessoal durante a projeção.
                     </p>
                 </div>
@@ -87,7 +76,6 @@
                     <input type="number" id="years" value="25" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition text-sm font-medium">
                 </div>
                 
-                <!-- Display Cards -->
                 <div class="grid grid-cols-2 gap-2 pt-1">
                     <div class="p-2 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
                         <p class="text-[9px] uppercase font-bold text-emerald-400 tracking-wider">Nominal Wealth</p>
@@ -110,7 +98,6 @@
 
         </div>
 
-        <!-- Advanced Parameters Drawer -->
         <details class="group bg-slate-900/30 backdrop-blur-md border border-slate-800/80 rounded-2xl p-4 transition-all duration-300">
             <summary class="flex items-center justify-between cursor-pointer list-none select-none">
                 <span class="text-xs font-bold uppercase tracking-widest text-slate-400 group-open:text-purple-400 transition-colors flex items-center gap-2">
@@ -119,15 +106,13 @@
                     </svg>
                     Configurações Fiscais e Metas
                 </span>
-                <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider group-open:hidden">Impostos, Volatilidade, Inflação e FIRE</span>
+                <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider group-open:hidden">Impostos Globais, Fluxo de Dividendos, Inflação e FIRE</span>
             </summary>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 pt-4 border-t border-slate-800/60 transition-all">
                 
-                <!-- Left Sub-Grid: Tax Question & Volatility -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- Interactive Tax Country Question -->
-                    <div class="flex flex-col justify-between">
+                <div class="space-y-4">
+                    <div>
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">O teu país de residência cobra imposto sobre dividendos?</label>
                         <div class="grid grid-cols-2 gap-2 h-10">
                             <label class="flex items-center justify-center space-x-2 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer select-none transition hover:border-slate-700 p-2">
@@ -140,35 +125,62 @@
                             </label>
                         </div>
                     </div>
+
+                    <div id="customTaxContainer" class="bg-slate-950/50 border border-slate-800 p-3 rounded-xl transition-all duration-200">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Qual é a taxa de imposto sobre dividendos do teu país (%)?</label>
+                        <input type="number" id="dividendTax" value="28" min="0" max="100" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-xs font-semibold">
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Estratégia de Alocação de Dividendos</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <label class="flex items-center space-x-2 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer select-none transition hover:border-slate-700 p-2.5 h-11">
+                                <input type="radio" name="divStrategy" value="etf" checked class="w-3.5 h-3.5 bg-slate-900 border-slate-800 text-purple-500 focus:ring-purple-500/50">
+                                <span class="text-[10px] font-bold uppercase text-slate-300 leading-tight">Reinvestimento Auto (Estilo ETF Acumulação)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer select-none transition hover:border-slate-700 p-2.5 h-11">
+                                <input type="radio" name="divStrategy" value="manual" class="w-3.5 h-3.5 bg-slate-900 border-slate-800 text-purple-500 focus:ring-purple-500/50">
+                                <span class="text-[10px] font-bold uppercase text-slate-300 leading-tight">Retirar / Reinvestir Manualmente</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="customReinvestContainer" class="hidden bg-slate-950/50 border border-slate-800 p-3 rounded-xl transition-all duration-200">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Percentagem de Dividendos Líquidos a Reinvestir (%)</label>
+                        <input type="number" id="dividendReinvest" value="100" min="0" max="100" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-xs font-semibold">
+                        <p class="text-[9px] text-slate-500 mt-1">A fatia restante é sacada imediatamente da carteira pelo utilizador.</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
                     <div>
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Market Volatility Vector</label>
-                        <select id="marketRegime" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-xs font-medium h-10 mt-3.5 sm:mt-5">
+                        <select id="marketRegime" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-xs font-medium h-10">
                             <option value="stable">Stable Engine (Linear Growth)</option>
                             <option value="volatile">Volatile Engine (Cyclical Shocks)</option>
                         </select>
                     </div>
-                </div>
-                
-                <!-- Right Sub-Grid: FIRE Objective & Advanced Real Wealth Switch -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">FIRE Monthly Goal (Real €)</label>
-                        <input type="number" id="fireTarget" value="1500" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium h-10">
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">FIRE Monthly Goal (Real €)</label>
+                            <input type="number" id="fireTarget" value="1500" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium h-10">
+                        </div>
+                        <div class="flex flex-col justify-end pb-0.5">
+                            <label class="flex items-center space-x-3 cursor-pointer bg-slate-950/60 border border-slate-800 p-2 rounded-xl h-10 select-none transition hover:border-slate-700">
+                                <input type="checkbox" id="enableInflation" class="w-4 h-4 rounded bg-slate-900 border-slate-800 text-purple-500 focus:ring-purple-500/50 focus:ring-offset-0 focus:ring-2">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">Ativar Motor de Inflação</span>
+                            </label>
+                        </div>
                     </div>
-                    <div class="flex flex-col justify-end pb-1">
-                        <label class="flex items-center space-x-3 cursor-pointer bg-slate-950/60 border border-slate-800 p-2 rounded-xl h-10 select-none transition hover:border-slate-700">
-                            <input type="checkbox" id="enableInflation" class="w-4 h-4 rounded bg-slate-900 border-slate-800 text-purple-500 focus:ring-purple-500/50 focus:ring-offset-0 focus:ring-2">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">Ativar Motor de Inflação</span>
-                        </label>
+
+                    <div id="inflationRateContainer" class="hidden bg-slate-950/40 border border-slate-800/60 p-4 rounded-xl">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Annual Inflation Rate (%)</label>
+                        <input type="number" id="inflationRate" value="2.5" step="0.1" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium">
+                        <p class="text-[10px] text-slate-500 mt-1.5">A ativação deste módulo força o cálculo do FIRE a basear-se no poder de compra real e injeta as curvas deflacionadas de património e dividendos no gráfico.</p>
                     </div>
                 </div>
 
-                <!-- Inflation Input Node -->
-                <div id="inflationRateContainer" class="hidden md:col-span-2 bg-slate-950/40 border border-slate-800/60 p-4 rounded-xl">
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Annual Inflation Rate (%)</label>
-                    <input type="number" id="inflationRate" value="2.5" step="0.1" class="w-full sm:w-1/3 p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium">
-                    <p class="text-[10px] text-slate-500 mt-1.5">A ativação deste módulo força o cálculo do FIRE a basear-se no poder de compra real e injeta as curvas deflacionadas de património e dividendos no gráfico.</p>
-                </div>
             </div>
         </details>
 
@@ -226,26 +238,50 @@
             const investRate = parseFloat(document.getElementById('investRate').value) || 0;
             const marketGrowth = parseFloat(document.getElementById('marketGrowth').value) || 0;
             const dividendYield = parseFloat(document.getElementById('dividendYield').value) || 0;
-            const dividendReinvest = parseFloat(document.getElementById('dividendReinvest').value) || 0;
             const years = parseInt(document.getElementById('years').value) || 0;
 
-            // Dynamic evaluation of the context's tax radio parameters
+            // 1. Dynamic Fiscal Vector Resolution
             const selectedTaxOption = document.querySelector('input[name="hasTax"]:checked').value;
-            const dynamicTaxRate = (selectedTaxOption === 'yes') ? 28 : 0; 
-            
+            const taxContainer = document.getElementById('customTaxContainer');
+            let dynamicTaxRate = 0;
+
+            if (selectedTaxOption === 'yes') {
+                taxContainer.classList.remove('hidden');
+                dynamicTaxRate = parseFloat(document.getElementById('dividendTax').value) || 0;
+            } else {
+                taxContainer.classList.add('hidden');
+                dynamicTaxRate = 0;
+            }
+
+            // 2. Dynamic Capital Flow Resolution (Allocation Strategy)
+            const selectedStrategy = document.querySelector('input[name="divStrategy"]:checked').value;
+            const reinvestContainer = document.getElementById('customReinvestContainer');
+            let dividendReinvest = 100;
+
+            if (selectedStrategy === 'manual') {
+                reinvestContainer.classList.remove('hidden');
+                dividendReinvest = parseFloat(document.getElementById('dividendReinvest').value) || 0;
+                document.getElementById('cashFlowDisclaimer').innerText = `*Nota: A simulação assume a retenção fiscal de ${dynamicTaxRate}% na fonte, reinvestindo apenas ${dividendReinvest}% do remanescente líquido no motor composto.`;
+            } else {
+                reinvestContainer.classList.add('hidden');
+                dividendReinvest = 100; // Force full ETF accumulation mechanism
+                document.getElementById('cashFlowDisclaimer').innerText = `*Nota: Estrutura estilo ETF de Acumulação ativa. 100% dos dividendos líquidos pós-fiscais (${dynamicTaxRate}%) são fundidos automaticamente no capital principal.`;
+            }
+
+            // 3. Engine Meta Systems
             const marketRegime = document.getElementById('marketRegime').value;
             const fireTarget = parseFloat(document.getElementById('fireTarget').value) || 0;
             const enableInflation = document.getElementById('enableInflation').checked;
             const inflationRate = parseFloat(document.getElementById('inflationRate').value) || 0;
 
-            const container = document.getElementById('inflationRateContainer');
+            const inflationContainer = document.getElementById('inflationRateContainer');
             
             if (enableInflation) {
-                container.classList.remove('hidden');
+                inflationContainer.classList.remove('hidden');
                 document.getElementById('realWealthTitle').className = "text-[9px] uppercase font-bold text-cyan-400 tracking-wider";
                 document.getElementById('fireMilestoneTitle').className = "text-[9px] uppercase font-bold text-purple-400 tracking-wider";
             } else {
-                container.classList.add('hidden');
+                inflationContainer.classList.add('hidden');
                 document.getElementById('realWealthTitle').className = "text-[9px] uppercase font-bold text-slate-500 tracking-wider";
                 document.getElementById('fireMilestoneTitle').className = "text-[9px] uppercase font-bold text-slate-500 tracking-wider";
             }
@@ -269,6 +305,7 @@
                 fireYearReached = "Never"; 
             }
 
+            // Macro Iteration Simulation Engine
             for (let y = 1; y <= years; y++) {
                 let dividendsThisYear = 0;
                 let annualGrowthNode = marketGrowth / 100;
@@ -285,7 +322,10 @@
                     let netDividends = grossDividends * taxFactor;
 
                     dividendsThisYear += netDividends;
-                    nominalBalance = baseBalance + generatedGrowth + (netDividends * (dividendReinvest / 100));
+                    
+                    // Reinvestment ratio impact applied sychronously inside the monthly sequence
+                    let dynamicReinvestmentFund = netDividends * (dividendReinvest / 100);
+                    nominalBalance = baseBalance + generatedGrowth + dynamicReinvestmentFund;
                     totalInvested += monthlyContribution;
                 }
 
@@ -307,6 +347,7 @@
                 labels.push(`Year ${y}`);
             }
 
+            // Deep Horizon Execution Block (Checks up to 1000 years for hyper targets)
             if (enableInflation && fireYearReached === "Never" && fireTarget > 0) {
                 let deepNominalBalance = nominalBalance;
                 let deepSalary = currentMonthlySalary;
@@ -376,7 +417,7 @@
         initChart();
         calculateSimulation();
 
-        // Target all inputs, selects, and radio shifts safely
+        // Safe DOM Listener mapping for responsive tracking
         const allControls = document.querySelectorAll('input, select');
         allControls.forEach(control => {
             control.addEventListener('input', calculateSimulation);
