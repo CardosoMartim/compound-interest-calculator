@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compound Interest Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-white min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-slate-700">
+        <h1 class="text-2xl font-bold mb-6 text-center text-emerald-400 tracking-wide">Compound Interest Calculator</h1>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Initial Investment (€)</label>
+                <input type="number" id="capital" value="1000" class="w-full p-3 rounded-xl bg-slate-700 border border-slate-600 text-white focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Monthly Contribution (€)</label>
+                <input type="number" id="aporte" value="100" class="w-full p-3 rounded-xl bg-slate-700 border border-slate-600 text-white focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Annual Interest Rate (%)</label>
+                <input type="number" id="taxa" value="8" step="0.1" class="w-full p-3 rounded-xl bg-slate-700 border border-slate-600 text-white focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Investment Period (Years)</label>
+                <input type="number" id="anos" value="10" class="w-full p-3 rounded-xl bg-slate-700 border border-slate-600 text-white focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition">
+            </div>
+            
+            <button id="btnCalcular" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold p-3.5 rounded-xl transition duration-200 mt-4">
+                Calculate Returns
+            </button>
+        </div>
+
+        <div id="resultadoBox" class="mt-6 p-4 rounded-xl bg-slate-900/60 border border-slate-700 hidden">
+            <p class="text-xs uppercase tracking-wider text-slate-400 text-center font-medium">Estimated Final Balance</p>
+            <p id="resultadoTotal" class="text-3xl font-black text-center text-emerald-400 mt-1">€0.00</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('btnCalcular').addEventListener('click', () => {
+            const capital = parseFloat(document.getElementById('capital').value) || 0;
+            const aporte = parseFloat(document.getElementById('aporte').value) || 0;
+            const taxaAnual = parseFloat(document.getElementById('taxa').value) || 0;
+            const anos = parseInt(document.getElementById('anos').value) || 0;
+
+            const taxaMensal = Math.pow(1 + (taxaAnual / 100), 1 / 12) - 1;
+            const totalMeses = anos * 12;
+            let saldo = capital;
+
+            for (let m = 1; m <= totalMeses; m++) {
+                saldo = (saldo + aporte) * (1 + taxaMensal);
+            }
+
+            document.getElementById('resultadoTotal').innerText = saldo.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
+            document.getElementById('resultadoBox').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
