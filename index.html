@@ -31,7 +31,7 @@
                     <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>Active Income
                 </h2>
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Net Monthly Salary (€)</label>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Net Monthly Salary ($)</label>
                     <input type="number" id="netSalary" value="1500" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm font-medium">
                 </div>
                 <div>
@@ -49,7 +49,7 @@
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Market Assets
                 </h2>
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Initial Capital (€)</label>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Initial Capital ($)</label>
                     <input type="number" id="initialCapital" value="5000" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
                 </div>
                 <div>
@@ -68,7 +68,7 @@
                         <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>Engine Metrics
                     </h2>
                     <p id="cashFlowDisclaimer" class="text-[9px] text-slate-400 font-medium italic mt-1 leading-tight border-b border-slate-800/40 pb-2">
-                        *Nota: Os dividendos gerados acumulam sempre no motor e nunca são retirados para usufruto pessoal durante a projeção.
+                        *Note: Generated dividends accumulate in the engine and are not withdrawn for personal use.
                     </p>
                 </div>
                 <div>
@@ -79,7 +79,7 @@
                 <div class="grid grid-cols-2 gap-2 pt-1">
                     <div class="p-2 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
                         <p class="text-[9px] uppercase font-bold text-emerald-400 tracking-wider">Nominal Wealth</p>
-                        <p id="nominalValueDisplay" class="text-xs font-black text-white mt-0.5">€0</p>
+                        <p id="nominalValueDisplay" class="text-xs font-black text-white mt-0.5">$0</p>
                     </div>
                     <div class="p-2 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
                         <p id="realWealthTitle" class="text-[9px] uppercase font-bold text-slate-500 tracking-wider">Real Wealth</p>
@@ -87,7 +87,7 @@
                     </div>
                     <div class="p-2 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
                         <p class="text-[9px] uppercase font-bold text-amber-400 tracking-wider">Final Year Divs</p>
-                        <p id="annualDivDisplay" class="text-xs font-black text-amber-400 mt-0.5">€0</p>
+                        <p id="annualDivDisplay" class="text-xs font-black text-amber-400 mt-0.5">$0</p>
                     </div>
                     <div class="p-2 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
                         <p id="fireMilestoneTitle" class="text-[9px] uppercase font-bold text-slate-500 tracking-wider">FIRE Milestone</p>
@@ -104,51 +104,51 @@
                     <svg class="w-3.5 h-3.5 transform group-open:rotate-180 transition-transform text-slate-500 group-open:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
-                    Configurações Fiscais e Metas
+                    Fiscal Settings & Goals
                 </span>
-                <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider group-open:hidden">Impostos Globais, Fluxo de Dividendos, Inflação e FIRE</span>
+                <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider group-open:hidden">Global Taxes, Dividends, Inflation & FIRE</span>
             </summary>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 pt-4 border-t border-slate-800/60 transition-all">
                 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">O teu país de residência cobra imposto sobre dividendos?</label>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Does your country tax dividends?</label>
                         <div class="grid grid-cols-2 gap-2 h-10">
                             <label class="flex items-center justify-center space-x-2 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer select-none transition hover:border-slate-700 p-2">
                                 <input type="radio" name="hasTax" value="yes" checked class="w-3.5 h-3.5 bg-slate-900 border-slate-800 text-purple-500 focus:ring-purple-500/50 focus:ring-offset-0">
-                                <span class="text-[11px] font-bold uppercase text-slate-300">Sim</span>
+                                <span class="text-[11px] font-bold uppercase text-slate-300">Yes</span>
                             </label>
                             <label class="flex items-center justify-center space-x-2 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer select-none transition hover:border-slate-700 p-2">
                                 <input type="radio" name="hasTax" value="no" class="w-3.5 h-3.5 bg-slate-900 border-slate-800 text-purple-500 focus:ring-purple-500/50 focus:ring-offset-0">
-                                <span class="text-[11px] font-bold uppercase text-slate-300">Não</span>
+                                <span class="text-[11px] font-bold uppercase text-slate-300">No</span>
                             </label>
                         </div>
                     </div>
 
                     <div id="customTaxContainer" class="bg-slate-950/50 border border-slate-800 p-3 rounded-xl transition-all duration-200">
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Qual é a taxa de imposto sobre dividendos do teu país (%)?</label>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">What is your dividend tax rate (%)?</label>
                         <input type="number" id="dividendTax" value="28" min="0" max="100" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-xs font-semibold">
                     </div>
 
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Estratégia de Alocação de Dividendos</label>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Dividend Allocation Strategy</label>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             <label class="flex items-center space-x-2 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer select-none transition hover:border-slate-700 p-2.5 h-11">
                                 <input type="radio" name="divStrategy" value="etf" checked class="w-3.5 h-3.5 bg-slate-900 border-slate-800 text-purple-500 focus:ring-purple-500/50">
-                                <span class="text-[10px] font-bold uppercase text-slate-300 leading-tight">Reinvestimento Auto (Estilo ETF Acumulação)</span>
+                                <span class="text-[10px] font-bold uppercase text-slate-300 leading-tight">Auto-Reinvest (Accumulating)</span>
                             </label>
                             <label class="flex items-center space-x-2 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer select-none transition hover:border-slate-700 p-2.5 h-11">
                                 <input type="radio" name="divStrategy" value="manual" class="w-3.5 h-3.5 bg-slate-900 border-slate-800 text-purple-500 focus:ring-purple-500/50">
-                                <span class="text-[10px] font-bold uppercase text-slate-300 leading-tight">Retirar / Reinvestir Manualmente</span>
+                                <span class="text-[10px] font-bold uppercase text-slate-300 leading-tight">Withdraw / Manual</span>
                             </label>
                         </div>
                     </div>
 
                     <div id="customReinvestContainer" class="hidden bg-slate-950/50 border border-slate-800 p-3 rounded-xl transition-all duration-200">
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Percentagem de Dividendos Líquidos a Reinvestir (%)</label>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Percentage of Net Dividends to Reinvest (%)</label>
                         <input type="number" id="dividendReinvest" value="100" min="0" max="100" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-xs font-semibold">
-                        <p class="text-[9px] text-slate-500 mt-1">A fatia restante é sacada imediatamente da carteira pelo utilizador.</p>
+                        <p class="text-[9px] text-slate-500 mt-1">The remaining slice is withdrawn from the portfolio.</p>
                     </div>
                 </div>
                 
@@ -163,13 +163,13 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">FIRE Monthly Goal (Real €)</label>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">FIRE Monthly Goal ($)</label>
                             <input type="number" id="fireTarget" value="1500" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium h-10">
                         </div>
                         <div class="flex flex-col justify-end pb-0.5">
                             <label class="flex items-center space-x-3 cursor-pointer bg-slate-950/60 border border-slate-800 p-2 rounded-xl h-10 select-none transition hover:border-slate-700">
                                 <input type="checkbox" id="enableInflation" class="w-4 h-4 rounded bg-slate-900 border-slate-800 text-purple-500 focus:ring-purple-500/50 focus:ring-offset-0 focus:ring-2">
-                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">Ativar Motor de Inflação</span>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">Enable Inflation Engine</span>
                             </label>
                         </div>
                     </div>
@@ -177,7 +177,7 @@
                     <div id="inflationRateContainer" class="hidden bg-slate-950/40 border border-slate-800/60 p-4 rounded-xl">
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Annual Inflation Rate (%)</label>
                         <input type="number" id="inflationRate" value="2.5" step="0.1" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium">
-                        <p class="text-[10px] text-slate-500 mt-1.5">A ativação deste módulo força o cálculo do FIRE a basear-se no poder de compra real e injeta as curvas deflacionadas de património e dividendos no gráfico.</p>
+                        <p class="text-[10px] text-slate-500 mt-1.5">Activating this engine forces the FIRE calculation to be based on real purchasing power.</p>
                     </div>
                 </div>
 
@@ -216,7 +216,7 @@
                                     let label = context.dataset.label || '';
                                     if (label) { label += ': '; }
                                     if (context.parsed.y !== null) {
-                                        label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(context.parsed.y);
+                                        label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(context.parsed.y);
                                     }
                                     return label;
                                 }
@@ -225,7 +225,7 @@
                     },
                     scales: {
                         x: { grid: { color: 'rgba(51, 65, 85, 0.05)' }, ticks: { color: '#64748b', font: { size: 9 } } },
-                        y: { grid: { color: 'rgba(51, 65, 85, 0.05)' }, ticks: { color: '#64748b', font: { size: 9 }, callback: function(value) { if (value >= 1e6) return '€' + (value / 1e6).toFixed(1) + 'M'; if (value >= 1e3) return '€' + (value / 1e3).toFixed(0) + 'k'; return '€' + value; } } }
+                        y: { grid: { color: 'rgba(51, 65, 85, 0.05)' }, ticks: { color: '#64748b', font: { size: 9 }, callback: function(value) { if (value >= 1e6) return '$' + (value / 1e6).toFixed(1) + 'M'; if (value >= 1e3) return '$' + (value / 1e3).toFixed(0) + 'k'; return '$' + value; } } }
                     }
                 }
             });
@@ -240,7 +240,6 @@
             const dividendYield = parseFloat(document.getElementById('dividendYield').value) || 0;
             const years = parseInt(document.getElementById('years').value) || 0;
 
-            // 1. Dynamic Fiscal Vector Resolution
             const selectedTaxOption = document.querySelector('input[name="hasTax"]:checked').value;
             const taxContainer = document.getElementById('customTaxContainer');
             let dynamicTaxRate = 0;
@@ -253,7 +252,6 @@
                 dynamicTaxRate = 0;
             }
 
-            // 2. Dynamic Capital Flow Resolution (Allocation Strategy)
             const selectedStrategy = document.querySelector('input[name="divStrategy"]:checked').value;
             const reinvestContainer = document.getElementById('customReinvestContainer');
             let dividendReinvest = 100;
@@ -261,14 +259,13 @@
             if (selectedStrategy === 'manual') {
                 reinvestContainer.classList.remove('hidden');
                 dividendReinvest = parseFloat(document.getElementById('dividendReinvest').value) || 0;
-                document.getElementById('cashFlowDisclaimer').innerText = `*Nota: A simulação assume a retenção fiscal de ${dynamicTaxRate}% na fonte, reinvestindo apenas ${dividendReinvest}% do remanescente líquido no motor composto.`;
+                document.getElementById('cashFlowDisclaimer').innerText = `*Note: Simulation assumes a ${dynamicTaxRate}% fiscal retention, reinvesting only ${dividendReinvest}% of the net remainder.`;
             } else {
                 reinvestContainer.classList.add('hidden');
-                dividendReinvest = 100; // Force full ETF accumulation mechanism
-                document.getElementById('cashFlowDisclaimer').innerText = `*Nota: Estrutura estilo ETF de Acumulação ativa. 100% dos dividendos líquidos pós-fiscais (${dynamicTaxRate}%) são fundidos automaticamente no capital principal.`;
+                dividendReinvest = 100;
+                document.getElementById('cashFlowDisclaimer').innerText = `*Note: Accumulating ETF style active. 100% of net dividends (${dynamicTaxRate}% tax) are fused into the principal.`;
             }
 
-            // 3. Engine Meta Systems
             const marketRegime = document.getElementById('marketRegime').value;
             const fireTarget = parseFloat(document.getElementById('fireTarget').value) || 0;
             const enableInflation = document.getElementById('enableInflation').checked;
@@ -305,7 +302,6 @@
                 fireYearReached = "Never"; 
             }
 
-            // Macro Iteration Simulation Engine
             for (let y = 1; y <= years; y++) {
                 let dividendsThisYear = 0;
                 let annualGrowthNode = marketGrowth / 100;
@@ -323,7 +319,6 @@
 
                     dividendsThisYear += netDividends;
                     
-                    // Reinvestment ratio impact applied sychronously inside the monthly sequence
                     let dynamicReinvestmentFund = netDividends * (dividendReinvest / 100);
                     nominalBalance = baseBalance + generatedGrowth + dynamicReinvestmentFund;
                     totalInvested += monthlyContribution;
@@ -347,7 +342,6 @@
                 labels.push(`Year ${y}`);
             }
 
-            // Deep Horizon Execution Block (Checks up to 1000 years for hyper targets)
             if (enableInflation && fireYearReached === "Never" && fireTarget > 0) {
                 let deepNominalBalance = nominalBalance;
                 let deepSalary = currentMonthlySalary;
@@ -401,9 +395,9 @@
             const finalReal = realHistory[realHistory.length - 1];
             const finalNominalDivs = nominalDivHistory[nominalDivHistory.length - 1];
 
-            document.getElementById('nominalValueDisplay').innerText = finalNominal.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
-            document.getElementById('realValueDisplay').innerText = enableInflation ? finalReal.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }) : "Off";
-            document.getElementById('annualDivDisplay').innerText = finalNominalDivs.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+            document.getElementById('nominalValueDisplay').innerText = finalNominal.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+            document.getElementById('realValueDisplay').innerText = enableInflation ? finalReal.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) : "Off";
+            document.getElementById('annualDivDisplay').innerText = finalNominalDivs.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
             
             if (enableInflation) {
                 document.getElementById('fireMilestoneDisplay').innerText = fireYearReached;
@@ -417,7 +411,21 @@
         initChart();
         calculateSimulation();
 
-        // Safe DOM Listener mapping for responsive tracking
+        // Discreet Branding Injection
+        (function() {
+            const branding = document.createElement('div');
+            branding.innerText = "GitHub - CardosoMartim";
+            branding.style.position = 'fixed';
+            branding.style.bottom = '10px';
+            branding.style.right = '10px';
+            branding.style.fontSize = '10px';
+            branding.style.opacity = '0.3';
+            branding.style.color = '#64748b';
+            branding.style.userSelect = 'none';
+            branding.style.pointerEvents = 'none';
+            document.body.appendChild(branding);
+        })();
+
         const allControls = document.querySelectorAll('input, select');
         allControls.forEach(control => {
             control.addEventListener('input', calculateSimulation);
