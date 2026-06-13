@@ -3,60 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compound Interest Calculator</title>
+    <title>Quantum Wealth Simulator</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-slate-900 text-white min-h-screen flex items-center justify-center p-4">
+<body class="bg-[#030712] text-slate-100 min-h-screen flex flex-col items-center justify-start p-4 md:p-8 font-sans selection:bg-cyan-500 selection:text-black">
 
-    <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-slate-700">
-        <h1 class="text-2xl font-bold mb-6 text-center text-emerald-400 tracking-wide">Compound Interest Calculator</h1>
+    <div class="w-full max-w-5xl space-y-6">
         
-        <div class="space-y-4">
-            <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Initial Investment (€)</label>
-                <input type="number" id="capital" value="1000" class="w-full p-3 rounded-xl bg-slate-700 border border-slate-600 text-white focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition">
+        <header class="text-center py-4">
+            <h1 class="text-3xl font-extrabold tracking-wider bg-gradient-to-r from-cyan-400 via-indigo-400 to-emerald-400 bg-clip-text text-transparent uppercase">
+                Quantum Wealth Simulator
+            </h1>
+            <p class="text-xs text-slate-500 mt-1 uppercase tracking-widest">Predicting capital progression through macroeconomics</p>
+        </header>
+
+        <div class="bg-slate-900/40 backdrop-blur-xl border border-slate-800 p-6 rounded-3xl shadow-2xl">
+            <div class="relative w-full h-64 md:h-80">
+                <canvas id="wealthChart"></canvas>
             </div>
-            <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Monthly Contribution (€)</label>
-                <input type="number" id="aporte" value="100" class="w-full p-3 rounded-xl bg-slate-700 border border-slate-600 text-white focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition">
-            </div>
-            <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Annual Interest Rate (%)</label>
-                <input type="number" id="taxa" value="8" step="0.1" class="w-full p-3 rounded-xl bg-slate-700 border border-slate-600 text-white focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition">
-            </div>
-            <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Investment Period (Years)</label>
-                <input type="number" id="anos" value="10" class="w-full p-3 rounded-xl bg-slate-700 border border-slate-600 text-white focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition">
-            </div>
-            
-            <button id="btnCalcular" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold p-3.5 rounded-xl transition duration-200 mt-4">
-                Calculate Returns
-            </button>
         </div>
 
-        <div id="resultadoBox" class="mt-6 p-4 rounded-xl bg-slate-900/60 border border-slate-700 hidden">
-            <p class="text-xs uppercase tracking-wider text-slate-400 text-center font-medium">Estimated Final Balance</p>
-            <p id="resultadoTotal" class="text-3xl font-black text-center text-emerald-400 mt-1">€0.00</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <div class="bg-slate-900/60 backdrop-blur-md border border-slate-800 p-5 rounded-2xl space-y-4">
+                <h2 class="text-xs font-bold uppercase text-cyan-400 tracking-widest border-b border-slate-800 pb-2">Active Income</h2>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Net Monthly Salary (€)</label>
+                    <input type="number" id="netSalary" value="1500" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Annual Salary Progression (%)</label>
+                    <input type="number" id="salaryProgression" value="3" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Salary Invested (%)</label>
+                    <input type="number" id="investRate" value="20" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm">
+                </div>
+            </div>
+
+            <div class="bg-slate-900/60 backdrop-blur-md border border-slate-800 p-5 rounded-2xl space-y-4">
+                <h2 class="text-xs font-bold uppercase text-emerald-400 tracking-widest border-b border-slate-800 pb-2">Market Yield</h2>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Initial Capital (€)</label>
+                    <input type="number" id="initialCapital" value="5000" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Market Appreciation Anual (%)</label>
+                    <input type="number" id="marketGrowth" value="7" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Average Dividend Yield Anual (%)</label>
+                    <input type="number" id="dividendYield" value="3" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm">
+                </div>
+            </div>
+
+            <div class="bg-slate-900/60 backdrop-blur-md border border-slate-800 p-5 rounded-2xl space-y-4">
+                <h2 class="text-xs font-bold uppercase text-rose-400 tracking-widest border-b border-slate-800 pb-2">Macro Variables</h2>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Country Inflation Rate (%)</label>
+                    <input type="number" id="inflationRate" value="2.5" step="0.1" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none transition text-sm">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Timeline Horizon (Years)</label>
+                    <input type="number" id="years" value="25" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none transition text-sm">
+                </div>
+                <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl h-[68px] flex flex-col justify-center">
+                    <p class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Real Asset Value</p>
+                    <p id="realValueDisplay" class="text-lg font-black text-emerald-400 mt-0.5">€0.00</p>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <script>
-        document.getElementById('btnCalcular').addEventListener('click', () => {
-            const capital = parseFloat(document.getElementById('capital').value) || 0;
-            const aporte = parseFloat(document.getElementById('aporte').value) || 0;
-            const taxaAnual = parseFloat(document.getElementById('taxa').value) || 0;
-            const anos = parseInt(document.getElementById('anos').value) || 0;
+        const ctx = document.getElementById('wealthChart').getContext('2d');
+        let wealthChart;
 
-            const taxaMensal = Math.pow(1 + (taxaAnual / 100), 1 / 12) - 1;
-            const totalMeses = anos * 12;
-            let saldo = capital;
+        function initChart() {
+            wealthChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Nominal Wealth (Future Value)',
+                            data: [],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.05)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Real Wealth (Inflation Adjusted)',
+                            data: [],
+                            borderColor: '#38bdf8',
+                            backgroundColor: 'rgba(56, 189, 248, 0.05)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8', font: { size: 11, weight: 'bold' } } }
+                    },
+                    scales: {
+                        x: { grid: { color: '#1e293b' }, ticks: { color: '#64748b' } },
+                        y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b' } }
+                    }
+                }
+            });
+        }
 
-            for (let m = 1; m <= totalMeses; m++) {
-                saldo = (saldo + aporte) * (1 + taxaMensal);
+        function calculateSimulation() {
+            const initialCapital = parseFloat(document.getElementById('initialCapital').value) || 0;
+            const netSalary = parseFloat(document.getElementById('netSalary').value) || 0;
+            const salaryProgression = parseFloat(document.getElementById('salaryProgression').value) || 0;
+            const investRate = parseFloat(document.getElementById('investRate').value) || 0;
+            const marketGrowth = parseFloat(document.getElementById('marketGrowth').value) || 0;
+            const dividendYield = parseFloat(document.getElementById('dividendYield').value) || 0;
+            const inflationRate = parseFloat(document.getElementById('inflationRate').value) || 0;
+            const years = parseInt(document.getElementById('years').value) || 0;
+
+            let nominalBalance = initialCapital;
+            let currentMonthlySalary = netSalary;
+
+            let nominalHistory = [initialCapital];
+            let realHistory = [initialCapital];
+            let labels = ['Year 0'];
+
+            const totalReturnAnnual = marketGrowth + dividendYield;
+            const totalReturnMonthly = Math.pow(1 + (totalReturnAnnual / 100), 1 / 12) - 1;
+
+            for (let y = 1; y <= years; y++) {
+                for (let m = 1; m <= 12; m++) {
+                    let monthlyContribution = currentMonthlySalary * (investRate / 100);
+                    nominalBalance = (nominalBalance + monthlyContribution) * (1 + totalReturnMonthly);
+                }
+                currentMonthlySalary = currentMonthlySalary * (1 + (salaryProgression / 100));
+
+                let accumulatedInflationFactor = Math.pow(1 + (inflationRate / 100), y);
+                let currentRealBalance = nominalBalance / accumulatedInflationFactor;
+
+                nominalHistory.push(Math.round(nominalBalance));
+                realHistory.push(Math.round(currentRealBalance));
+                labels.push(`Year ${y}`);
             }
 
-            document.getElementById('resultadoTotal').innerText = saldo.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
-            document.getElementById('resultadoBox').classList.remove('hidden');
+            wealthChart.data.labels = labels;
+            wealthChart.data.datasets[0].data = nominalHistory;
+            wealthChart.data.datasets[1].data = realHistory;
+            wealthChart.update();
+
+            const finalRealValue = realHistory[realHistory.length - 1];
+            document.getElementById('realValueDisplay').innerText = finalRealValue.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+        }
+
+        initChart();
+        calculateSimulation();
+
+        const allInputs = document.querySelectorAll('input');
+        allInputs.forEach(input => {
+            input.addEventListener('input', calculateSimulation);
         });
     </script>
 </body>
