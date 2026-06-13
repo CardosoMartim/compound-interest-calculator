@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Wealth Engine v3.1 - Global Edition</title>
+    <title>Quantum Wealth Engine v3.2</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -18,17 +18,14 @@
             <p class="text-xs text-slate-500 mt-1 uppercase tracking-widest font-semibold">Borderless Macro Forecasting & Dynamic Fiscal Vectors</p>
         </header>
 
-        <!-- Chart Container -->
         <div class="bg-slate-900/30 backdrop-blur-xl border border-slate-800/80 p-6 rounded-3xl shadow-2xl relative">
             <div class="relative w-full h-72 md:h-96">
                 <canvas id="wealthChart"></canvas>
             </div>
         </div>
 
-        <!-- Input Control Panel -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             
-            <!-- Column 1: Active Income -->
             <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
                 <h2 class="text-xs font-bold uppercase text-cyan-400 tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>Active Income
@@ -47,7 +44,6 @@
                 </div>
             </div>
 
-            <!-- Column 2: Market & Dividends -->
             <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
                 <h2 class="text-xs font-bold uppercase text-emerald-400 tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Market & Dividends
@@ -72,31 +68,23 @@
                 </div>
             </div>
 
-            <!-- Column 3: Macro Variables & Outputs -->
             <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
                 <h2 class="text-xs font-bold uppercase text-amber-400 tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>Macro & Metrics
+                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>Engine Metrics
                 </h2>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Inflation Rate (%)</label>
-                        <input type="number" id="inflationRate" value="2.5" step="0.1" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition text-sm font-medium">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Horizon (Years)</label>
-                        <input type="number" id="years" value="25" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition text-sm font-medium">
-                    </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Horizon Simulation (Years)</label>
+                    <input type="number" id="years" value="25" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition text-sm font-medium">
                 </div>
                 
-                <!-- Display Cards -->
                 <div class="grid grid-cols-2 gap-2 pt-1">
                     <div class="p-2 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
                         <p class="text-[9px] uppercase font-bold text-emerald-400 tracking-wider">Nominal Wealth</p>
                         <p id="nominalValueDisplay" class="text-xs font-black text-white mt-0.5">€0</p>
                     </div>
                     <div class="p-2 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
-                        <p class="text-[9px] uppercase font-bold text-cyan-400 tracking-wider">Real Wealth</p>
-                        <p id="realValueDisplay" class="text-xs font-black text-cyan-400 mt-0.5">€0</p>
+                        <p id="realWealthTitle" class="text-[9px] uppercase font-bold text-slate-500 tracking-wider">Real Wealth</p>
+                        <p id="realValueDisplay" class="text-xs font-black text-slate-500 mt-0.5">Off</p>
                     </div>
                     <div class="p-2 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
                         <p class="text-[9px] uppercase font-bold text-amber-400 tracking-wider">Final Year Divs</p>
@@ -104,14 +92,13 @@
                     </div>
                     <div class="p-2 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
                         <p class="text-[9px] uppercase font-bold text-purple-400 tracking-wider">FIRE Milestone</p>
-                        <p id="fireMilestoneDisplay" class="text-xs font-black text-purple-400 mt-0.5">N/A</p>
+                        <p id="fireMilestoneDisplay" class="text-xs font-black text-purple-400 mt-0.5">Calculating...</p>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- Hidden Organized Parameters (Advanced Settings) -->
         <details class="group bg-slate-900/30 backdrop-blur-md border border-slate-800/80 rounded-2xl p-4 transition-all duration-300">
             <summary class="flex items-center justify-between cursor-pointer list-none select-none">
                 <span class="text-xs font-bold uppercase tracking-widest text-slate-400 group-open:text-purple-400 transition-colors flex items-center gap-2">
@@ -120,24 +107,41 @@
                     </svg>
                     Advanced Engine Vectors
                 </span>
-                <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider group-open:hidden">Global Tax, Volatility & FIRE Target</span>
+                <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider group-open:hidden">Global Tax, Volatility & Inflation Vectors</span>
             </summary>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 pt-4 border-t border-slate-800/60 transition-all">
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Dividend Tax Rate (%)</label>
-                    <input type="number" id="dividendTax" value="28" min="0" max="100" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium h-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 pt-4 border-t border-slate-800/60 transition-all">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Dividend Tax Rate (%)</label>
+                        <input type="number" id="dividendTax" value="28" min="0" max="100" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium h-10">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Market Volatility Vector</label>
+                        <select id="marketRegime" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-xs font-medium h-10">
+                            <option value="stable">Stable Engine (Linear Growth)</option>
+                            <option value="volatile">Volatile Engine (Cyclical Shocks)</option>
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Market Volatility Vector</label>
-                    <select id="marketRegime" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-xs font-medium h-10">
-                        <option value="stable">Stable Engine (Linear Growth)</option>
-                        <option value="volatile">Volatile Engine (Cyclical Shocks)</option>
-                    </select>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">FIRE Monthly Goal (€)</label>
+                        <input type="number" id="fireTarget" value="1500" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium h-10">
+                    </div>
+                    <div class="flex flex-col justify-end pb-1">
+                        <label class="flex items-center space-x-3 cursor-pointer bg-slate-950/60 border border-slate-800 p-2 rounded-xl h-10 select-none transition hover:border-slate-700">
+                            <input type="checkbox" id="enableInflation" class="w-4 h-4 rounded bg-slate-900 border-slate-800 text-purple-500 focus:ring-purple-500/50 focus:ring-offset-0 focus:ring-2">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">Enable Inflation Engine</span>
+                        </label>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">FIRE Monthly Goal (€)</label>
-                    <input type="number" id="fireTarget" value="1500" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-xs font-medium h-10">
+
+                <div id="inflationRateContainer" class="hidden md:col-span-2 bg-slate-950/40 border border-slate-800/60 p-4 rounded-xl">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Annual Inflation Rate (%)</label>
+                    <input type="number" id="inflationRate" value="2.5" step="0.1" class="w-full sm:w-1/3 p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium">
+                    <p class="text-[10px] text-slate-500 mt-1.5">Activating this complexifies the matrix, injecting 'Real Wealth' and 'Real Dividend' layers downscaled by cumulative purchasing power loss.</p>
                 </div>
             </div>
         </details>
@@ -168,7 +172,7 @@
                             label: 'Nominal Wealth',
                             data: [],
                             borderColor: '#10b981',
-                            backgroundColor: 'rgba(16, 185, 129, 0.02)',
+                            backgroundColor: 'rgba(16, 185, 129, 0.01)',
                             borderWidth: 3,
                             fill: true,
                             tension: 0.15,
@@ -179,7 +183,7 @@
                             label: 'Real Wealth (Inflation)',
                             data: [],
                             borderColor: '#06b6d4',
-                            backgroundColor: 'rgba(6, 182, 212, 0.02)',
+                            backgroundColor: 'rgba(6, 182, 212, 0.01)',
                             borderWidth: 3,
                             fill: true,
                             tension: 0.15,
@@ -187,11 +191,22 @@
                             pointHoverRadius: 5
                         },
                         {
-                            label: 'Annual Dividend Income',
+                            label: 'Nominal Annual Dividends',
                             data: [],
                             borderColor: '#f59e0b',
                             backgroundColor: 'transparent',
                             borderWidth: 2.5,
+                            tension: 0.15,
+                            pointRadius: 0,
+                            pointHoverRadius: 5
+                        },
+                        {
+                            label: 'Real Annual Dividends',
+                            data: [],
+                            borderColor: '#ef4444',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            borderDash: [2, 2],
                             tension: 0.15,
                             pointRadius: 0,
                             pointHoverRadius: 5
@@ -207,7 +222,10 @@
                             labels: { 
                                 color: '#94a3b8', 
                                 font: { size: 10, weight: '600' },
-                                boxWidth: 10, boxHeight: 10, borderRadius: 3
+                                // Configuração para exibir o modelo exato da linha em vez de caixas quadradas
+                                boxWidth: 30,
+                                boxHeight: 2,
+                                usePointStyle: false
                             } 
                         },
                         tooltip: {
@@ -220,7 +238,7 @@
                             borderRadius: 6,
                             callbacks: {
                                 label: function(context) {
-                                    let label = context.dataset.label.split(' (')[0] || '';
+                                    let label = context.dataset.label || '';
                                     if (label) { label += ': '; }
                                     if (context.parsed.y !== null) {
                                         label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(context.parsed.y);
@@ -231,9 +249,9 @@
                         }
                     },
                     scales: {
-                        x: { grid: { color: 'rgba(51, 65, 85, 0.1)' }, ticks: { color: '#64748b', font: { size: 9 } } },
+                        x: { grid: { color: 'rgba(51, 65, 85, 0.05)' }, ticks: { color: '#64748b', font: { size: 9 } } },
                         y: { 
-                            grid: { color: 'rgba(51, 65, 85, 0.1)' }, 
+                            grid: { color: 'rgba(51, 65, 85, 0.05)' }, 
                             ticks: { 
                                 color: '#64748b', font: { size: 9 },
                                 callback: function(value) {
@@ -256,13 +274,24 @@
             const marketGrowth = parseFloat(document.getElementById('marketGrowth').value) || 0;
             const dividendYield = parseFloat(document.getElementById('dividendYield').value) || 0;
             const dividendReinvest = parseFloat(document.getElementById('dividendReinvest').value) || 0;
-            const inflationRate = parseFloat(document.getElementById('inflationRate').value) || 0;
             const years = parseInt(document.getElementById('years').value) || 0;
 
-            // Globalized Input Parameters
+            // Advanced Elements
             const dividendTax = parseFloat(document.getElementById('dividendTax').value) || 0;
             const marketRegime = document.getElementById('marketRegime').value;
             const fireTarget = parseFloat(document.getElementById('fireTarget').value) || 0;
+            const enableInflation = document.getElementById('enableInflation').checked;
+            const inflationRate = parseFloat(document.getElementById('inflationRate').value) || 0;
+
+            // UI Toggle Behavior for Inflation Container
+            const container = document.getElementById('inflationRateContainer');
+            if (enableInflation) {
+                container.classList.remove('hidden');
+                document.getElementById('realWealthTitle').className = "text-[9px] uppercase font-bold text-cyan-400 tracking-wider";
+            } else {
+                container.classList.add('hidden');
+                document.getElementById('realWealthTitle').className = "text-[9px] uppercase font-bold text-slate-500 tracking-wider";
+            }
 
             let nominalBalance = initialCapital;
             let totalInvested = initialCapital;
@@ -272,12 +301,14 @@
             let investedHistory = [initialCapital];
             let nominalHistory = [initialCapital];
             let realHistory = [initialCapital];
-            let dividendIncomeHistory = [Math.round(initialCapital * (dividendYield / 100) * (1 - (dividendTax / 100)))];
+            let nominalDivHistory = [Math.round(initialCapital * (dividendYield / 100) * (1 - (dividendTax / 100)))];
+            let realDivHistory = [Math.round(initialCapital * (dividendYield / 100) * (1 - (dividendTax / 100)))];
             let labels = ['Year 0'];
 
             const monthlyDividendRate = Math.pow(1 + (dividendYield / 100), 1 / 12) - 1;
             const taxFactor = 1 - (dividendTax / 100);
 
+            // Simulation Horizon Loop
             for (let y = 1; y <= years; y++) {
                 let dividendsThisYear = 0;
 
@@ -293,48 +324,95 @@
 
                     let generatedGrowth = baseBalance * monthlyGrowthRate;
                     let grossDividends = baseBalance * monthlyDividendRate;
-
-                    // Apply the custom user-defined tax rate (handles 0% perfectly)
                     let netDividends = grossDividends * taxFactor;
 
                     dividendsThisYear += netDividends;
 
                     let reinvestedAmount = netDividends * (dividendReinvest / 100);
-                    
                     nominalBalance = baseBalance + generatedGrowth + reinvestedAmount;
                     totalInvested += monthlyContribution;
                 }
 
                 currentMonthlySalary = currentMonthlySalary * (1 + (salaryProgression / 100));
-
                 let accumulatedInflationFactor = Math.pow(1 + (inflationRate / 100), y);
+                
                 let currentRealBalance = nominalBalance / accumulatedInflationFactor;
+                let currentRealDividends = dividendsThisYear / accumulatedInflationFactor;
 
-                if (fireYearReached === "Never" && (dividendsThisYear / 12) >= fireTarget) {
+                // Fire trigger condition verification
+                let fireEvaluationValue = enableInflation ? currentRealDividends : dividendsThisYear;
+                if (fireYearReached === "Never" && (fireEvaluationValue / 12) >= fireTarget) {
                     fireYearReached = `Year ${y}`;
                 }
 
                 investedHistory.push(Math.round(nominalBalance < 0 ? 0 : totalInvested));
                 nominalHistory.push(Math.round(nominalBalance < 0 ? 0 : nominalBalance));
                 realHistory.push(Math.round(currentRealBalance < 0 ? 0 : currentRealBalance));
-                dividendIncomeHistory.push(Math.round(dividendsThisYear));
+                nominalDivHistory.push(Math.round(dividendsThisYear));
+                realDivHistory.push(Math.round(currentRealDividends));
                 labels.push(`Year ${y}`);
             }
 
+            // DEEP HORIZON CALCULATION ENGINE (Up to 1000 years check to solve error states)
+            if (fireYearReached === "Never" && fireTarget > 0) {
+                let deepNominalBalance = nominalBalance;
+                let deepSalary = currentMonthlySalary;
+                
+                for (let dy = years + 1; dy <= 1000; dy++) {
+                    let deepDividendsThisYear = 0;
+                    let annualGrowthNode = marketGrowth / 100;
+                    if (marketRegime === 'volatile') {
+                        annualGrowthNode += Math.sin(dy * 1.1) * 0.07 - 0.02;
+                    }
+                    const monthlyGrowthRate = Math.pow(1 + annualGrowthNode, 1 / 12) - 1;
+
+                    for (let dm = 1; dm <= 12; dm++) {
+                        let monthlyContribution = deepSalary * (investRate / 100);
+                        let baseBalance = deepNominalBalance + monthlyContribution;
+                        let generatedGrowth = baseBalance * monthlyGrowthRate;
+                        let grossDividends = baseBalance * monthlyDividendRate;
+                        let netDividends = grossDividends * taxFactor;
+
+                        deepDividendsThisYear += netDividends;
+                        deepNominalBalance = baseBalance + generatedGrowth + (netDividends * (dividendReinvest / 100));
+                    }
+                    deepSalary = deepSalary * (1 + (salaryProgression / 100));
+                    
+                    let deepInflationFactor = Math.pow(1 + (inflationRate / 100), dy);
+                    let deepEvaluationValue = enableInflation ? (deepDividendsThisYear / deepInflationFactor) : deepDividendsThisYear;
+
+                    if ((deepEvaluationValue / 12) >= fireTarget) {
+                        fireYearReached = `Year ${dy}`;
+                        break;
+                    }
+                    if (deepNominalBalance === Infinity || deepNominalBalance > 1e20) {
+                        fireYearReached = "> 1000 Years";
+                        break;
+                    }
+                }
+            }
+
+            // Update Dynamic Datasets Visibility based on Complexity Toggle
             wealthChart.data.labels = labels;
             wealthChart.data.datasets[0].data = investedHistory;
             wealthChart.data.datasets[1].data = nominalHistory;
             wealthChart.data.datasets[2].data = realHistory;
-            wealthChart.data.datasets[3].data = dividendIncomeHistory;
+            wealthChart.data.datasets[3].data = nominalDivHistory;
+            wealthChart.data.datasets[4].data = realDivHistory;
+
+            wealthChart.setDatasetVisibility(2, enableInflation); 
+            wealthChart.setDatasetVisibility(4, enableInflation); 
+
             wealthChart.update();
 
+            // Dom Outputs
             const finalNominal = nominalHistory[nominalHistory.length - 1];
             const finalReal = realHistory[realHistory.length - 1];
-            const finalYearDivs = dividendIncomeHistory[dividendIncomeHistory.length - 1];
+            const finalNominalDivs = nominalDivHistory[nominalDivHistory.length - 1];
 
             document.getElementById('nominalValueDisplay').innerText = finalNominal.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
-            document.getElementById('realValueDisplay').innerText = finalReal.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
-            document.getElementById('annualDivDisplay').innerText = finalYearDivs.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+            document.getElementById('realValueDisplay').innerText = enableInflation ? finalReal.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }) : "Off";
+            document.getElementById('annualDivDisplay').innerText = finalNominalDivs.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
             document.getElementById('fireMilestoneDisplay').innerText = fireYearReached;
         }
 
