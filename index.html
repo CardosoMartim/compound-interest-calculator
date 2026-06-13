@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Wealth Engine</title>
+    <title>Quantum Wealth Engine v2</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -12,10 +12,10 @@
     <div class="w-full max-w-5xl space-y-6">
         
         <header class="text-center py-2">
-            <h1 class="text-3xl font-black tracking-wider bg-gradient-to-r from-cyan-400 via-purple-400 to-emerald-400 bg-clip-text text-transparent uppercase">
+            <h1 class="text-3xl font-black tracking-wider bg-gradient-to-r from-cyan-400 via-purple-400 to-amber-400 bg-clip-text text-transparent uppercase">
                 Quantum Wealth Engine
             </h1>
-            <p class="text-xs text-slate-500 mt-1 uppercase tracking-widest font-semibold">Advanced Financial Trajectory & Macro Forecasting</p>
+            <p class="text-xs text-slate-500 mt-1 uppercase tracking-widest font-semibold">Granular Dividend Capitalization & Macro Forecasting</p>
         </header>
 
         <div class="bg-slate-900/30 backdrop-blur-xl border border-slate-800/80 p-6 rounded-3xl shadow-2xl relative">
@@ -46,19 +46,25 @@
 
             <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
                 <h2 class="text-xs font-bold uppercase text-emerald-400 tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Market Yield
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Market & Dividends
                 </h2>
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Initial Capital (€)</label>
                     <input type="number" id="initialCapital" value="5000" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
                 </div>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Market Appreciation Anual (%)</label>
-                    <input type="number" id="marketGrowth" value="7" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Growth Anual (%)</label>
+                        <input type="number" id="marketGrowth" value="7" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Div Yield Anual (%)</label>
+                        <input type="number" id="dividendYield" value="3" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
+                    </div>
                 </div>
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Average Dividend Yield Anual (%)</label>
-                    <input type="number" id="dividendYield" value="3" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Dividends Reinvested (%)</label>
+                    <input type="number" id="dividendReinvest" value="100" min="0" max="100" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
                 </div>
             </div>
 
@@ -66,23 +72,33 @@
                 <h2 class="text-xs font-bold uppercase text-amber-400 tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>Macro & Metrics
                 </h2>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Country Inflation Rate (%)</label>
-                    <input type="number" id="inflationRate" value="2.5" step="0.1" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition text-sm font-medium">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Timeline Horizon (Years)</label>
-                    <input type="number" id="years" value="25" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition text-sm font-medium">
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Inflation Rate (%)</label>
+                        <input type="number" id="inflationRate" value="2.5" step="0.1" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition text-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Horizon (Years)</label>
+                        <input type="number" id="years" value="25" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition text-sm font-medium">
+                    </div>
                 </div>
                 
                 <div class="grid grid-cols-2 gap-2 pt-1">
-                    <div class="p-2.5 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
+                    <div class="p-2 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
                         <p class="text-[9px] uppercase font-bold text-emerald-400 tracking-wider">Nominal Wealth</p>
-                        <p id="nominalValueDisplay" class="text-sm font-black text-white mt-0.5">€0</p>
+                        <p id="nominalValueDisplay" class="text-xs font-black text-white mt-0.5">€0</p>
                     </div>
-                    <div class="p-2.5 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
+                    <div class="p-2 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
                         <p class="text-[9px] uppercase font-bold text-cyan-400 tracking-wider">Real Wealth</p>
-                        <p id="realValueDisplay" class="text-sm font-black text-cyan-400 mt-0.5">€0</p>
+                        <p id="realValueDisplay" class="text-xs font-black text-cyan-400 mt-0.5">€0</p>
+                    </div>
+                    <div class="p-2 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
+                        <p class="text-[9px] uppercase font-bold text-amber-400 tracking-wider">Final Year Divs (Annual)</p>
+                        <p id="annualDivDisplay" class="text-xs font-black text-amber-400 mt-0.5">€0</p>
+                    </div>
+                    <div class="p-2 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
+                        <p class="text-[9px] uppercase font-bold text-purple-400 tracking-wider">Total Divs Payout</p>
+                        <p id="totalPayoutDisplay" class="text-xs font-black text-purple-400 mt-0.5">€0</p>
                     </div>
                 </div>
             </div>
@@ -106,31 +122,41 @@
                             borderColor: '#a855f7',
                             backgroundColor: 'transparent',
                             borderWidth: 2,
-                            borderDash: [5, 5],
+                            borderDash: [4, 4],
                             pointRadius: 0,
-                            pointHoverRadius: 5
+                            pointHoverRadius: 4
                         },
                         {
                             label: 'Nominal Wealth (Future Value)',
                             data: [],
                             borderColor: '#10b981',
-                            backgroundColor: 'rgba(16, 185, 129, 0.03)',
+                            backgroundColor: 'rgba(16, 185, 129, 0.02)',
                             borderWidth: 3,
                             fill: true,
-                            tension: 0.2,
+                            tension: 0.15,
                             pointRadius: 0,
-                            pointHoverRadius: 6
+                            pointHoverRadius: 5
                         },
                         {
                             label: 'Real Wealth (Inflation Adjusted)',
                             data: [],
                             borderColor: '#06b6d4',
-                            backgroundColor: 'rgba(6, 182, 212, 0.03)',
+                            backgroundColor: 'rgba(6, 182, 212, 0.02)',
                             borderWidth: 3,
                             fill: true,
-                            tension: 0.2,
+                            tension: 0.15,
                             pointRadius: 0,
-                            pointHoverRadius: 6
+                            pointHoverRadius: 5
+                        },
+                        {
+                            label: 'Annual Dividend Income',
+                            data: [],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2.5,
+                            tension: 0.15,
+                            pointRadius: 0,
+                            pointHoverRadius: 5
                         }
                     ]
                 },
@@ -145,10 +171,10 @@
                         legend: { 
                             labels: { 
                                 color: '#94a3b8', 
-                                font: { size: 11, weight: '600' },
-                                boxWidth: 12,
-                                boxHeight: 12,
-                                borderRadius: 4
+                                font: { size: 10, weight: '600' },
+                                boxWidth: 10,
+                                boxHeight: 10,
+                                borderRadius: 3
                             } 
                         },
                         tooltip: {
@@ -157,12 +183,11 @@
                             bodyColor: '#f8fafc',
                             borderColor: '#334155',
                             borderWidth: 1,
-                            padding: 12,
-                            boxPadding: 6,
-                            titleFont: { size: 12, weight: 'bold' },
-                            bodyFont: { size: 12 },
-                            cornerStyle: 'rounded',
-                            borderRadius: 8,
+                            padding: 10,
+                            boxPadding: 5,
+                            titleFont: { size: 11, weight: 'bold' },
+                            bodyFont: { size: 11 },
+                            borderRadius: 6,
                             callbacks: {
                                 label: function(context) {
                                     let label = context.dataset.label.split(' (')[0] || '';
@@ -177,14 +202,14 @@
                     },
                     scales: {
                         x: { 
-                            grid: { color: 'rgba(51, 65, 85, 0.3)' }, 
-                            ticks: { color: '#64748b', font: { size: 10 } } 
+                            grid: { color: 'rgba(51, 65, 85, 0.2)' }, 
+                            ticks: { color: '#64748b', font: { size: 9 } } 
                         },
                         y: { 
-                            grid: { color: 'rgba(51, 65, 85, 0.3)' }, 
+                            grid: { color: 'rgba(51, 65, 85, 0.2)' }, 
                             ticks: { 
                                 color: '#64748b', 
-                                font: { size: 10 },
+                                font: { size: 9 },
                                 callback: function(value) {
                                     if (value >= 1e6) return '€' + (value / 1e6).toFixed(1) + 'M';
                                     if (value >= 1e3) return '€' + (value / 1e3).toFixed(0) + 'k';
@@ -204,27 +229,44 @@
             const investRate = parseFloat(document.getElementById('investRate').value) || 0;
             const marketGrowth = parseFloat(document.getElementById('marketGrowth').value) || 0;
             const dividendYield = parseFloat(document.getElementById('dividendYield').value) || 0;
+            const dividendReinvest = parseFloat(document.getElementById('dividendReinvest').value) || 0;
             const inflationRate = parseFloat(document.getElementById('inflationRate').value) || 0;
             const years = parseInt(document.getElementById('years').value) || 0;
 
             let nominalBalance = initialCapital;
             let totalInvested = initialCapital;
             let currentMonthlySalary = netSalary;
+            let totalDividendsPayoutAccumulated = 0;
 
             let investedHistory = [initialCapital];
             let nominalHistory = [initialCapital];
             let realHistory = [initialCapital];
+            let dividendIncomeHistory = [Math.round(initialCapital * (dividendYield / 100))];
             let labels = ['Year 0'];
 
-            const totalReturnAnnual = marketGrowth + dividendYield;
-            const totalReturnMonthly = Math.pow(1 + (totalReturnAnnual / 100), 1 / 12) - 1;
+            const monthlyGrowthRate = Math.pow(1 + (marketGrowth / 100), 1 / 12) - 1;
+            const monthlyDividendRate = Math.pow(1 + (dividendYield / 100), 1 / 12) - 1;
 
             for (let y = 1; y <= years; y++) {
+                let dividendsThisYear = 0;
+
                 for (let m = 1; m <= 12; m++) {
                     let monthlyContribution = currentMonthlySalary * (investRate / 100);
-                    nominalBalance = (nominalBalance + monthlyContribution) * (1 + totalReturnMonthly);
+                    let baseBalance = nominalBalance + monthlyContribution;
+
+                    let generatedGrowth = baseBalance * monthlyGrowthRate;
+                    let generatedDividends = baseBalance * monthlyDividendRate;
+
+                    dividendsThisYear += generatedDividends;
+
+                    let reinvestedAmount = generatedDividends * (dividendReinvest / 100);
+                    let paidOutAmount = generatedDividends * (1 - (dividendReinvest / 100));
+
+                    totalDividendsPayoutAccumulated += paidOutAmount;
+                    nominalBalance = baseBalance + generatedGrowth + reinvestedAmount;
                     totalInvested += monthlyContribution;
                 }
+
                 currentMonthlySalary = currentMonthlySalary * (1 + (salaryProgression / 100));
 
                 let accumulatedInflationFactor = Math.pow(1 + (inflationRate / 100), y);
@@ -233,6 +275,7 @@
                 investedHistory.push(Math.round(totalInvested));
                 nominalHistory.push(Math.round(nominalBalance));
                 realHistory.push(Math.round(currentRealBalance));
+                dividendIncomeHistory.push(Math.round(dividendsThisYear));
                 labels.push(`Year ${y}`);
             }
 
@@ -240,13 +283,17 @@
             wealthChart.data.datasets[0].data = investedHistory;
             wealthChart.data.datasets[1].data = nominalHistory;
             wealthChart.data.datasets[2].data = realHistory;
+            wealthChart.data.datasets[3].data = dividendIncomeHistory;
             wealthChart.update();
 
-            const finalNominalValue = nominalHistory[nominalHistory.length - 1];
-            const finalRealValue = realHistory[realHistory.length - 1];
+            const finalNominal = nominalHistory[nominalHistory.length - 1];
+            const finalReal = realHistory[realHistory.length - 1];
+            const finalYearDivs = dividendIncomeHistory[dividendIncomeHistory.length - 1];
 
-            document.getElementById('nominalValueDisplay').innerText = finalNominalValue.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
-            document.getElementById('realValueDisplay').innerText = finalRealValue.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+            document.getElementById('nominalValueDisplay').innerText = finalNominal.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+            document.getElementById('realValueDisplay').innerText = finalReal.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+            document.getElementById('annualDivDisplay').innerText = finalYearDivs.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+            document.getElementById('totalPayoutDisplay').innerText = Math.round(totalDividendsPayoutAccumulated).toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
         }
 
         initChart();
