@@ -280,13 +280,13 @@
             } else {
                 inflationContainer.classList.add('hidden');
                 document.getElementById('realWealthTitle').className = "text-[9px] uppercase font-bold text-slate-500 tracking-wider";
-                document.getElementById('fireMilestoneTitle').className = "text-[9px] uppercase font-bold text-slate-500 tracking-wider";
+                document.getElementById('fireMilestoneTitle').className = "text-[9px] uppercase font-bold text-purple-400 tracking-wider";
             }
 
             let nominalBalance = initialCapital;
             let totalInvested = initialCapital;
             let currentMonthlySalary = netSalary;
-            let fireYearReached = "Off"; 
+            let fireYearReached = fireTarget > 0 ? "Never" : "Off"; 
 
             let investedHistory = [initialCapital];
             let nominalHistory = [initialCapital];
@@ -297,10 +297,6 @@
 
             const monthlyDividendRate = Math.pow(1 + (dividendYield / 100), 1 / 12) - 1;
             const taxFactor = 1 - (dynamicTaxRate / 100);
-
-            if (enableInflation && fireTarget > 0) {
-                fireYearReached = "Never"; 
-            }
 
             for (let y = 1; y <= years; y++) {
                 let dividendsThisYear = 0;
@@ -330,7 +326,9 @@
                 let currentRealBalance = nominalBalance / accumulatedInflationFactor;
                 let currentRealDividends = dividendsThisYear / accumulatedInflationFactor;
 
-                if (enableInflation && fireYearReached === "Never" && (currentRealDividends / 12) >= fireTarget) {
+                const targetDividendsToCheck = enableInflation ? currentRealDividends : dividendsThisYear;
+
+                if (fireYearReached === "Never" && (targetDividendsToCheck / 12) >= fireTarget) {
                     fireYearReached = `Year ${y}`;
                 }
 
@@ -342,7 +340,7 @@
                 labels.push(`Year ${y}`);
             }
 
-            if (enableInflation && fireYearReached === "Never" && fireTarget > 0) {
+            if (fireYearReached === "Never" && fireTarget > 0) {
                 let deepNominalBalance = nominalBalance;
                 let deepSalary = currentMonthlySalary;
                 
@@ -369,7 +367,9 @@
                     let deepInflationFactor = Math.pow(1 + (inflationRate / 100), dy);
                     let deepRealDividends = deepDividendsThisYear / deepInflationFactor;
 
-                    if ((deepRealDividends / 12) >= fireTarget) {
+                    const deepTargetDividendsToCheck = enableInflation ? deepRealDividends : deepDividendsThisYear;
+
+                    if ((deepTargetDividendsToCheck / 12) >= fireTarget) {
                         fireYearReached = `Year ${dy}`;
                         break;
                     }
@@ -399,11 +399,10 @@
             document.getElementById('realValueDisplay').innerText = enableInflation ? finalReal.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) : "Off";
             document.getElementById('annualDivDisplay').innerText = finalNominalDivs.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
             
-            if (enableInflation) {
-                document.getElementById('fireMilestoneDisplay').innerText = fireYearReached;
+            document.getElementById('fireMilestoneDisplay').innerText = fireYearReached;
+            if (fireYearReached !== "Off" && fireYearReached !== "Never" && fireYearReached !== "> 1000 Years") {
                 document.getElementById('fireMilestoneDisplay').className = "text-xs font-black text-purple-400 mt-0.5";
             } else {
-                document.getElementById('fireMilestoneDisplay').innerText = "Off";
                 document.getElementById('fireMilestoneDisplay').className = "text-xs font-black text-slate-500 mt-0.5";
             }
         }
@@ -429,6 +428,7 @@
         const allControls = document.querySelectorAll('input, select');
         allControls.forEach(control => {
             control.addEventListener('input', calculateSimulation);
+            control.addEventListener('change', calculateSimulation);
         });
     </script>
 </body>
