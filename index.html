@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Wealth Engine v3</title>
+    <title>Quantum Wealth Engine v3.1 - Global Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -15,7 +15,7 @@
             <h1 class="text-3xl font-black tracking-wider bg-gradient-to-r from-cyan-400 via-purple-400 to-amber-400 bg-clip-text text-transparent uppercase">
                 Quantum Wealth Engine
             </h1>
-            <p class="text-xs text-slate-500 mt-1 uppercase tracking-widest font-semibold">Macro Forecasting & Advanced Fiscal Vectors</p>
+            <p class="text-xs text-slate-500 mt-1 uppercase tracking-widest font-semibold">Borderless Macro Forecasting & Dynamic Fiscal Vectors</p>
         </header>
 
         <!-- Chart Container -->
@@ -88,7 +88,7 @@
                     </div>
                 </div>
                 
-                <!-- Expanded Display Cards -->
+                <!-- Display Cards -->
                 <div class="grid grid-cols-2 gap-2 pt-1">
                     <div class="p-2 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center">
                         <p class="text-[9px] uppercase font-bold text-emerald-400 tracking-wider">Nominal Wealth</p>
@@ -111,7 +111,7 @@
 
         </div>
 
-        <!-- Hidden Organized Parameters (Details Accordion to avoid clutter) -->
+        <!-- Hidden Organized Parameters (Advanced Settings) -->
         <details class="group bg-slate-900/30 backdrop-blur-md border border-slate-800/80 rounded-2xl p-4 transition-all duration-300">
             <summary class="flex items-center justify-between cursor-pointer list-none select-none">
                 <span class="text-xs font-bold uppercase tracking-widest text-slate-400 group-open:text-purple-400 transition-colors flex items-center gap-2">
@@ -120,16 +120,13 @@
                     </svg>
                     Advanced Engine Vectors
                 </span>
-                <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider group-open:hidden">Tax, Volatility & FIRE Target</span>
+                <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider group-open:hidden">Global Tax, Volatility & FIRE Target</span>
             </summary>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 pt-4 border-t border-slate-800/60 transition-all">
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Fiscal Regulation</label>
-                    <select id="fiscalPolicy" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-xs font-medium h-10">
-                        <option value="gross">Gross Returns (0% Tax)</option>
-                        <option value="net">Net Returns (28% IRS Retention)</option>
-                    </select>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Dividend Tax Rate (%)</label>
+                    <input type="number" id="dividendTax" value="28" min="0" max="100" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium h-10">
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Market Volatility Vector</label>
@@ -262,8 +259,8 @@
             const inflationRate = parseFloat(document.getElementById('inflationRate').value) || 0;
             const years = parseInt(document.getElementById('years').value) || 0;
 
-            // Advanced Inputs
-            const fiscalPolicy = document.getElementById('fiscalPolicy').value;
+            // Globalized Input Parameters
+            const dividendTax = parseFloat(document.getElementById('dividendTax').value) || 0;
             const marketRegime = document.getElementById('marketRegime').value;
             const fireTarget = parseFloat(document.getElementById('fireTarget').value) || 0;
 
@@ -275,15 +272,15 @@
             let investedHistory = [initialCapital];
             let nominalHistory = [initialCapital];
             let realHistory = [initialCapital];
-            let dividendIncomeHistory = [Math.round(initialCapital * (dividendYield / 100))];
+            let dividendIncomeHistory = [Math.round(initialCapital * (dividendYield / 100) * (1 - (dividendTax / 100)))];
             let labels = ['Year 0'];
 
             const monthlyDividendRate = Math.pow(1 + (dividendYield / 100), 1 / 12) - 1;
+            const taxFactor = 1 - (dividendTax / 100);
 
             for (let y = 1; y <= years; y++) {
                 let dividendsThisYear = 0;
 
-                // Adjust growth rate per year if volatile engine is active to simulate market waves
                 let annualGrowthNode = marketGrowth / 100;
                 if (marketRegime === 'volatile') {
                     annualGrowthNode += Math.sin(y * 1.1) * 0.07 - 0.02;
@@ -295,16 +292,14 @@
                     let baseBalance = nominalBalance + monthlyContribution;
 
                     let generatedGrowth = baseBalance * monthlyGrowthRate;
-                    let generatedDividends = baseBalance * monthlyDividendRate;
+                    let grossDividends = baseBalance * monthlyDividendRate;
 
-                    // Apply Portuguese IRS withholding tax immediately to dividends distributed
-                    if (fiscalPolicy === 'net') {
-                        generatedDividends = generatedDividends * 0.72;
-                    }
+                    // Apply the custom user-defined tax rate (handles 0% perfectly)
+                    let netDividends = grossDividends * taxFactor;
 
-                    dividendsThisYear += generatedDividends;
+                    dividendsThisYear += netDividends;
 
-                    let reinvestedAmount = generatedDividends * (dividendReinvest / 100);
+                    let reinvestedAmount = netDividends * (dividendReinvest / 100);
                     
                     nominalBalance = baseBalance + generatedGrowth + reinvestedAmount;
                     totalInvested += monthlyContribution;
@@ -315,7 +310,6 @@
                 let accumulatedInflationFactor = Math.pow(1 + (inflationRate / 100), y);
                 let currentRealBalance = nominalBalance / accumulatedInflationFactor;
 
-                // Check FIRE Crossover Milestone
                 if (fireYearReached === "Never" && (dividendsThisYear / 12) >= fireTarget) {
                     fireYearReached = `Year ${y}`;
                 }
@@ -347,7 +341,6 @@
         initChart();
         calculateSimulation();
 
-        // Target all inputs and select dropdowns to update in real-time
         const allControls = document.querySelectorAll('input, select');
         allControls.forEach(control => {
             control.addEventListener('input', calculateSimulation);
