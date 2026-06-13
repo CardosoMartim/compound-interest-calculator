@@ -232,13 +232,16 @@
         }
 
         function calculateSimulation() {
-            const initialCapital = parseFloat(document.getElementById('initialCapital').value) || 0;
-            const netSalary = parseFloat(document.getElementById('netSalary').value) || 0;
-            const salaryProgression = parseFloat(document.getElementById('salaryProgression').value) || 0;
-            const investRate = parseFloat(document.getElementById('investRate').value) || 0;
-            const marketGrowth = parseFloat(document.getElementById('marketGrowth').value) || 0;
-            const dividendYield = parseFloat(document.getElementById('dividendYield').value) || 0;
-            const years = parseInt(document.getElementById('years').value) || 0;
+            // Clamping dinâmico e higienização inicial de valores absolutos base
+            const initialCapital = Math.max(0, parseFloat(document.getElementById('initialCapital').value) || 0);
+            const netSalary = Math.max(0, parseFloat(document.getElementById('netSalary').value) || 0);
+            
+            // Higienização Dinâmica de Inputs (Input Clamping) para taxas e percentagens
+            const salaryProgression = Math.max(-20, Math.min(300, parseFloat(document.getElementById('salaryProgression').value) || 0));
+            const investRate = Math.max(0, Math.min(100, parseFloat(document.getElementById('investRate').value) || 0));
+            const marketGrowth = Math.max(-95, Math.min(500, parseFloat(document.getElementById('marketGrowth').value) || 0));
+            const dividendYield = Math.max(0, Math.min(100, parseFloat(document.getElementById('dividendYield').value) || 0));
+            const years = Math.max(1, Math.min(100, parseInt(document.getElementById('years').value) || 0));
 
             const selectedTaxOption = document.querySelector('input[name="hasTax"]:checked').value;
             const taxContainer = document.getElementById('customTaxContainer');
@@ -246,7 +249,7 @@
 
             if (selectedTaxOption === 'yes') {
                 taxContainer.classList.remove('hidden');
-                dynamicTaxRate = parseFloat(document.getElementById('dividendTax').value) || 0;
+                dynamicTaxRate = Math.max(0, Math.min(100, parseFloat(document.getElementById('dividendTax').value) || 0));
             } else {
                 taxContainer.classList.add('hidden');
                 dynamicTaxRate = 0;
@@ -258,7 +261,7 @@
 
             if (selectedStrategy === 'manual') {
                 reinvestContainer.classList.remove('hidden');
-                dividendReinvest = parseFloat(document.getElementById('dividendReinvest').value) || 0;
+                dividendReinvest = Math.max(0, Math.min(100, parseFloat(document.getElementById('dividendReinvest').value) || 0));
                 document.getElementById('cashFlowDisclaimer').innerText = `*Note: Simulation assumes a ${dynamicTaxRate}% fiscal retention, reinvesting only ${dividendReinvest}% of the net remainder.`;
             } else {
                 reinvestContainer.classList.add('hidden');
@@ -267,9 +270,11 @@
             }
 
             const marketRegime = document.getElementById('marketRegime').value;
-            const fireTarget = parseFloat(document.getElementById('fireTarget').value) || 0;
+            const fireTarget = Math.max(0, parseFloat(document.getElementById('fireTarget').value) || 0);
             const enableInflation = document.getElementById('enableInflation').checked;
-            const inflationRate = parseFloat(document.getElementById('inflationRate').value) || 0;
+            
+            // Prevenção de Divisão por Zero no Motor de Inflação: Limite inferior definido para -99%
+            const inflationRate = Math.max(-99, Math.min(2000, parseFloat(document.getElementById('inflationRate').value) || 0));
 
             const inflationContainer = document.getElementById('inflationRateContainer');
             
@@ -291,8 +296,10 @@
             let investedHistory = [initialCapital];
             let nominalHistory = [initialCapital];
             let realHistory = [initialCapital];
-            let nominalDivHistory = [Math.round(initialCapital * (dividendYield / 100) * (1 - (dynamicTaxRate / 100)))];
-            let realDivHistory = [Math.round(initialCapital * (dividendYield / 100) * (1 - (dynamicTaxRate / 100)))];
+            
+            // Resolução do "Artefacto do Ano 0": Inicialização matemática exata a zero dividendos acumulados
+            let nominalDivHistory = [0];
+            let realDivHistory = [0];
             let labels = ['Year 0'];
 
             const monthlyDividendRate = Math.pow(1 + (dividendYield / 100), 1 / 12) - 1;
@@ -321,7 +328,10 @@
                 }
 
                 currentMonthlySalary = currentMonthlySalary * (1 + (salaryProgression / 100));
+                
+                // Fator de inflação protegido contra taxas de -100%
                 let accumulatedInflationFactor = Math.pow(1 + (inflationRate / 100), y);
+                if (accumulatedInflationFactor <= 0) accumulatedInflationFactor = 0.0001; 
                 
                 let currentRealBalance = nominalBalance / accumulatedInflationFactor;
                 let currentRealDividends = dividendsThisYear / accumulatedInflationFactor;
@@ -365,6 +375,7 @@
                     deepSalary = deepSalary * (1 + (salaryProgression / 100));
                     
                     let deepInflationFactor = Math.pow(1 + (inflationRate / 100), dy);
+                    if (deepInflationFactor <= 0) deepInflationFactor = 0.0001;
                     let deepRealDividends = deepDividendsThisYear / deepInflationFactor;
 
                     const deepTargetDividendsToCheck = enableInflation ? deepRealDividends : deepDividendsThisYear;
@@ -410,7 +421,6 @@
         initChart();
         calculateSimulation();
 
-        // Discreet Branding Injection
         (function() {
             const branding = document.createElement('div');
             branding.innerText = "GitHub - CardosoMartim";
