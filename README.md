@@ -32,14 +32,5 @@ FIRE Coupling: The milestone calculation is strictly coupled to the inflation en
 
 Cash Flow Security: The system accounts for capital "leakage" if you choose not to reinvest 100% of dividends, recalculating the compound interest curve in real-time.
 
-🚀 How to Run
-Clone this repository to your local machine:
-
-Bash:
-git clone https://github.com/your-username/quantum-wealth-engine.git
-Open the index.html file in any modern web browser.
-
-No external dependencies are required (all frameworks are loaded via CDN).
-
 📜 License
 This project is open-source and available under the MIT License.
