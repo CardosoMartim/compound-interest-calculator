@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Wealth Engine v3.6</title>
+    <title>Quantum Wealth Engine v3.7</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -26,6 +26,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             
+            <!-- COLUMN 1: ACTIVE INCOME -->
             <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
                 <h2 class="text-xs font-bold uppercase text-cyan-400 tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>Active Income
@@ -44,6 +45,7 @@
                 </div>
             </div>
 
+            <!-- COLUMN 2: MARKET ASSETS & FEES -->
             <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
                 <h2 class="text-xs font-bold uppercase text-emerald-400 tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Market Assets & Fees
@@ -62,18 +64,29 @@
                         <input type="number" id="dividendYield" value="3" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-2">
+                
+                <!-- ENHANCED EXPLANATIONS FOR FEES -->
+                <div class="space-y-2 pt-1 border-t border-slate-800/40">
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">TER / Fund Fee (%)</label>
-                        <input type="number" id="terRate" value="0.2" step="0.01" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
+                        <div class="flex justify-between items-center">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">TER / Fund Fee (%)</label>
+                            <span class="text-[9px] text-slate-500 lowercase italic">Internal fund drag</span>
+                        </div>
+                        <input type="number" id="terRate" value="0.2" step="0.01" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-xs font-medium">
+                        <p class="text-[9px] text-slate-500 mt-0.5 leading-tight">Total Expense Ratio. Annual internal fee charged automatically by the ETF/Fund (e.g., iShares/Vanguard).</p>
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Brokerage Fee (%)</label>
-                        <input type="number" id="brokerageFee" value="0.1" step="0.01" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
+                        <div class="flex justify-between items-center">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Brokerage Fee (%)</label>
+                            <span class="text-[9px] text-slate-500 lowercase italic">Platform custody</span>
+                        </div>
+                        <input type="number" id="brokerageFee" value="0.1" step="0.01" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-xs font-medium">
+                        <p class="text-[9px] text-slate-500 mt-0.5 leading-tight">Annual platform maintenance, custody, or average transactional fee charged by your broker.</p>
                     </div>
                 </div>
             </div>
 
+            <!-- COLUMN 3: ENGINE METRICS -->
             <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
                 <div>
                     <h2 class="text-xs font-bold uppercase text-amber-400 tracking-widest border-b border-slate-800 pb-1 flex items-center gap-2">
@@ -110,7 +123,8 @@
 
         </div>
 
-        <details class="group bg-slate-900/30 backdrop-blur-md border border-slate-800/80 rounded-2xl p-4 transition-all duration-300">
+        <!-- EXPANDABLE: FISCAL SETTINGS, COUNTRY PRESETS & CAPITAL EVENTS -->
+        <details class="group bg-slate-900/30 backdrop-blur-md border border-slate-800/80 rounded-2xl p-4 transition-all duration-300" open>
             <summary class="flex items-center justify-between cursor-pointer list-none select-none">
                 <span class="text-xs font-bold uppercase tracking-widest text-slate-400 group-open:text-purple-400 transition-colors flex items-center gap-2">
                     <svg class="w-3.5 h-3.5 transform group-open:rotate-180 transition-transform text-slate-500 group-open:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -123,6 +137,7 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 pt-4 border-t border-slate-800/60 transition-all">
                 
+                <!-- LEFT SIDE: TAXATION & COUNTRIES -->
                 <div class="space-y-4">
                     <div>
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Select Jurisdiction Preset</label>
@@ -175,20 +190,47 @@
                     </div>
                 </div>
                 
+                <!-- RIGHT SIDE: MULTIPLE EXTRAORDINARY CAPITAL EVENTS & FIRE -->
                 <div class="space-y-4">
                     <div class="bg-slate-950/40 border border-slate-800/80 p-4 rounded-xl space-y-3">
-                        <h3 class="text-[10px] font-bold uppercase text-purple-400 tracking-wider">One-off Stock Liquidation / Event</h3>
-                        <div class="grid grid-cols-2 gap-2">
+                        <h3 class="text-[10px] font-bold uppercase text-purple-400 tracking-wider">Chronological Stock Liquidations / Capital Events</h3>
+                        
+                        <!-- EVENT SLOT 1 -->
+                        <div class="grid grid-cols-3 gap-2 items-center bg-slate-950 p-2 rounded-lg border border-slate-900">
+                            <span class="text-[9px] font-bold uppercase text-slate-500">Event #1</span>
                             <div>
-                                <label class="block text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">Target Year</label>
-                                <input type="number" id="sellYear" value="0" min="0" class="w-full p-2 bg-slate-900 border border-slate-800 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-xs">
+                                <label class="block text-[8px] font-bold uppercase text-slate-400 mb-0.5">Year</label>
+                                <input type="number" id="sellYear1" value="5" min="0" class="w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs">
                             </div>
                             <div>
-                                <label class="block text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">Amount to Sell ($)</label>
-                                <input type="number" id="sellAmount" value="0" min="0" class="w-full p-2 bg-slate-900 border border-slate-800 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-xs">
+                                <label class="block text-[8px] font-bold uppercase text-slate-400 mb-0.5">Amount ($)</label>
+                                <input type="number" id="sellAmount1" value="0" min="0" class="w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs">
                             </div>
                         </div>
-                        <p class="text-[9px] text-slate-500 leading-tight">*Note: Simulates a massive strategic asset withdrawal or an extraordinary life expense in that specific year.</p>
+
+                        <!-- EVENT SLOT 2 -->
+                        <div class="grid grid-cols-3 gap-2 items-center bg-slate-950 p-2 rounded-lg border border-slate-900">
+                            <span class="text-[9px] font-bold uppercase text-slate-500">Event #2</span>
+                            <div>
+                                <input type="number" id="sellYear2" value="10" min="0" class="w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs">
+                            </div>
+                            <div>
+                                <input type="number" id="sellAmount2" value="0" min="0" class="w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs">
+                            </div>
+                        </div>
+
+                        <!-- EVENT SLOT 3 -->
+                        <div class="grid grid-cols-3 gap-2 items-center bg-slate-950 p-2 rounded-lg border border-slate-900">
+                            <span class="text-[9px] font-bold uppercase text-slate-500">Event #3</span>
+                            <div>
+                                <input type="number" id="sellYear3" value="15" min="0" class="w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs">
+                            </div>
+                            <div>
+                                <input type="number" id="sellAmount3" value="0" min="0" class="w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs">
+                            </div>
+                        </div>
+
+                        <p class="text-[9px] text-slate-500 leading-tight">*Note: Simulates sequential large expenses (e.g., house down-payments, corporate ventures, cars) at specific structural years.</p>
                     </div>
 
                     <div>
@@ -215,7 +257,6 @@
                     <div id="inflationRateContainer" class="hidden bg-slate-950/40 border border-slate-800/60 p-4 rounded-xl">
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Annual Inflation Rate (%)</label>
                         <input type="number" id="inflationRate" value="2.5" step="0.1" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium">
-                        <p class="text-[10px] text-slate-500 mt-1.5">Activating this engine forces the FIRE calculation to be based on real purchasing power.</p>
                     </div>
                 </div>
 
@@ -228,7 +269,6 @@
         const ctx = document.getElementById('wealthChart').getContext('2d');
         let wealthChart;
 
-        // Country tax mapping dictionary object
         const countryTaxes = {
             "PT": { tax: 28, hasTax: "yes" },
             "US": { tax: 15, hasTax: "yes" },
@@ -277,7 +317,6 @@
             });
         }
 
-        // Event handler for automatic country presets selection
         document.getElementById('countryPreset').addEventListener('change', function(e) {
             const countryCode = e.target.value;
             if (countryCode !== 'custom' && countryTaxes[countryCode]) {
@@ -301,13 +340,15 @@
             const dividendYield = Math.max(0, Math.min(100, parseFloat(document.getElementById('dividendYield').value) || 0));
             const years = Math.max(1, Math.min(100, parseInt(document.getElementById('years').value) || 0));
 
-            // Added fee parameters extraction
             const terRate = Math.max(0, Math.min(20, parseFloat(document.getElementById('terRate').value) || 0));
             const brokerageFee = Math.max(0, Math.min(20, parseFloat(document.getElementById('brokerageFee').value) || 0));
 
-            // Added one-off stock sales parameters extraction
-            const sellYear = Math.max(0, parseInt(document.getElementById('sellYear').value) || 0);
-            const sellAmount = Math.max(0, parseFloat(document.getElementById('sellAmount').value) || 0);
+            // MULTIPLE LIQUIDATIONS ARRAY VECTOR EXTRACTION
+            const liquidations = [
+                { year: Math.max(0, parseInt(document.getElementById('sellYear1').value) || 0), amount: Math.max(0, parseFloat(document.getElementById('sellAmount1').value) || 0) },
+                { year: Math.max(0, parseInt(document.getElementById('sellYear2').value) || 0), amount: Math.max(0, parseFloat(document.getElementById('sellAmount2').value) || 0) },
+                { year: Math.max(0, parseInt(document.getElementById('sellYear3').value) || 0), amount: Math.max(0, parseFloat(document.getElementById('sellAmount3').value) || 0) }
+            ];
 
             const selectedTaxOption = document.querySelector('input[name="hasTax"]:checked').value;
             const taxContainer = document.getElementById('customTaxContainer');
@@ -370,13 +411,10 @@
 
             const monthlyDividendRate = Math.pow(1 + (dividendYield / 100), 1 / 12) - 1;
             const taxFactor = 1 - (dynamicTaxRate / 100);
-
-            // Calculate total continuous compression fee from TER and Brokerage commissions
             const totalFeesVector = (terRate / 100) + (brokerageFee / 100);
 
             for (let y = 1; y <= years; y++) {
                 let dividendsThisYear = 0;
-                // Net annual growth node adjusted directly by subtracting the expense ratios
                 let annualGrowthNode = (marketGrowth / 100) - totalFeesVector;
                 
                 if (marketRegime === 'volatile') {
@@ -398,10 +436,12 @@
                     totalInvested += monthlyContribution;
                 }
 
-                // Application of one-off stock sale or extraordinary withdrawal event at the end of the matching year
-                if (y === sellYear) {
-                    nominalBalance = Math.max(0, nominalBalance - sellAmount);
-                }
+                // LOOPING THROUGH CHRONOLOGICAL LIQUIDATIONS VECTOR
+                liquidations.forEach(event => {
+                    if (y === event.year) {
+                        nominalBalance = Math.max(0, nominalBalance - event.amount);
+                    }
+                });
 
                 currentMonthlySalary = currentMonthlySalary * (1 + (salaryProgression / 100));
                 
@@ -425,7 +465,7 @@
                 labels.push(`Year ${y}`);
             }
 
-            // Deep background calculation loop for precise milestone detection
+            // DEEP RUNTIME MILESTONE DETECTION WITH MULTIPLE EVENTS TRACKING
             if (fireYearReached === "Never" && fireTarget > 0) {
                 let deepNominalBalance = nominalBalance;
                 let deepSalary = currentMonthlySalary;
@@ -449,9 +489,11 @@
                         deepNominalBalance = baseBalance + generatedGrowth + (netDividends * (dividendReinvest / 100));
                     }
 
-                    if (dy === sellYear) {
-                        deepNominalBalance = Math.max(0, deepNominalBalance - sellAmount);
-                    }
+                    liquidations.forEach(event => {
+                        if (dy === event.year) {
+                            deepNominalBalance = Math.max(0, deepNominalBalance - event.amount);
+                        }
+                    });
 
                     deepSalary = deepSalary * (1 + (salaryProgression / 100));
                     
@@ -502,7 +544,6 @@
         initChart();
         calculateSimulation();
 
-        // Branding footer script block
         (function() {
             const branding = document.createElement('div');
             branding.innerText = "GitHub - CardosoMartim";
