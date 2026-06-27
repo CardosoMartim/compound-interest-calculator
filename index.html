@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Wealth Engine v3.5</title>
+    <title>Quantum Wealth Engine v3.6</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -46,19 +46,31 @@
 
             <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
                 <h2 class="text-xs font-bold uppercase text-emerald-400 tracking-widest border-b border-slate-800 pb-2 flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Market Assets
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Market Assets & Fees
                 </h2>
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Initial Capital ($)</label>
                     <input type="number" id="initialCapital" value="5000" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
                 </div>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Annual Market Growth (%)</label>
-                    <input type="number" id="marketGrowth" value="7" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Growth (%)</label>
+                        <input type="number" id="marketGrowth" value="7" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Div Yield (%)</label>
+                        <input type="number" id="dividendYield" value="3" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Annual Dividend Yield (%)</label>
-                    <input type="number" id="dividendYield" value="3" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">TER / Fund Fee (%)</label>
+                        <input type="number" id="terRate" value="0.2" step="0.01" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Brokerage Fee (%)</label>
+                        <input type="number" id="brokerageFee" value="0.1" step="0.01" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
+                    </div>
                 </div>
             </div>
 
@@ -104,14 +116,25 @@
                     <svg class="w-3.5 h-3.5 transform group-open:rotate-180 transition-transform text-slate-500 group-open:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
-                    Fiscal Settings & Goals
+                    Fiscal Settings, Presets & Capital Events
                 </span>
-                <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider group-open:hidden">Global Taxes, Dividends, Inflation & FIRE</span>
+                <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider group-open:hidden">Global Taxes, Country Presets & Stock Liquidation</span>
             </summary>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 pt-4 border-t border-slate-800/60 transition-all">
                 
                 <div class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Select Jurisdiction Preset</label>
+                        <select id="countryPreset" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-xs font-medium h-10">
+                            <option value="custom">Custom Configuration (Manual)</option>
+                            <option value="PT">Portugal (28% Flat Dividend Tax)</option>
+                            <option value="US">United States (15% Standard Capital Tax)</option>
+                            <option value="UK">United Kingdom (20% Standard Dividend/Growth)</option>
+                            <option value="DE">Germany (26.375% Abgeltungsteuer)</option>
+                        </select>
+                    </div>
+
                     <div>
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Does your country tax dividends?</label>
                         <div class="grid grid-cols-2 gap-2 h-10">
@@ -153,6 +176,21 @@
                 </div>
                 
                 <div class="space-y-4">
+                    <div class="bg-slate-950/40 border border-slate-800/80 p-4 rounded-xl space-y-3">
+                        <h3 class="text-[10px] font-bold uppercase text-purple-400 tracking-wider">One-off Stock Liquidation / Event</h3>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">Target Year</label>
+                                <input type="number" id="sellYear" value="0" min="0" class="w-full p-2 bg-slate-900 border border-slate-800 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">Amount to Sell ($)</label>
+                                <input type="number" id="sellAmount" value="0" min="0" class="w-full p-2 bg-slate-900 border border-slate-800 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-xs">
+                            </div>
+                        </div>
+                        <p class="text-[9px] text-slate-500 leading-tight">*Note: Simulates a massive strategic asset withdrawal or an extraordinary life expense in that specific year.</p>
+                    </div>
+
                     <div>
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Market Volatility Vector</label>
                         <select id="marketRegime" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-xs font-medium h-10">
@@ -189,6 +227,14 @@
     <script>
         const ctx = document.getElementById('wealthChart').getContext('2d');
         let wealthChart;
+
+        // Country tax mapping dictionary object
+        const countryTaxes = {
+            "PT": { tax: 28, hasTax: "yes" },
+            "US": { tax: 15, hasTax: "yes" },
+            "UK": { tax: 20, hasTax: "yes" },
+            "DE": { tax: 26.375, hasTax: "yes" }
+        };
 
         function initChart() {
             wealthChart = new Chart(ctx, {
@@ -231,17 +277,37 @@
             });
         }
 
+        // Event handler for automatic country presets selection
+        document.getElementById('countryPreset').addEventListener('change', function(e) {
+            const countryCode = e.target.value;
+            if (countryCode !== 'custom' && countryTaxes[countryCode]) {
+                const config = countryTaxes[countryCode];
+                document.getElementById('dividendTax').value = config.tax;
+                const radioToCheck = document.querySelector(`input[name="hasTax"][value="${config.hasTax}"]`);
+                if (radioToCheck) {
+                    radioToCheck.checked = true;
+                }
+                calculateSimulation();
+            }
+        });
+
         function calculateSimulation() {
-            // Clamping dinâmico e higienização inicial de valores absolutos base
             const initialCapital = Math.max(0, parseFloat(document.getElementById('initialCapital').value) || 0);
             const netSalary = Math.max(0, parseFloat(document.getElementById('netSalary').value) || 0);
             
-            // Higienização Dinâmica de Inputs (Input Clamping) para taxas e percentagens
             const salaryProgression = Math.max(-20, Math.min(300, parseFloat(document.getElementById('salaryProgression').value) || 0));
             const investRate = Math.max(0, Math.min(100, parseFloat(document.getElementById('investRate').value) || 0));
             const marketGrowth = Math.max(-95, Math.min(500, parseFloat(document.getElementById('marketGrowth').value) || 0));
             const dividendYield = Math.max(0, Math.min(100, parseFloat(document.getElementById('dividendYield').value) || 0));
             const years = Math.max(1, Math.min(100, parseInt(document.getElementById('years').value) || 0));
+
+            // Added fee parameters extraction
+            const terRate = Math.max(0, Math.min(20, parseFloat(document.getElementById('terRate').value) || 0));
+            const brokerageFee = Math.max(0, Math.min(20, parseFloat(document.getElementById('brokerageFee').value) || 0));
+
+            // Added one-off stock sales parameters extraction
+            const sellYear = Math.max(0, parseInt(document.getElementById('sellYear').value) || 0);
+            const sellAmount = Math.max(0, parseFloat(document.getElementById('sellAmount').value) || 0);
 
             const selectedTaxOption = document.querySelector('input[name="hasTax"]:checked').value;
             const taxContainer = document.getElementById('customTaxContainer');
@@ -253,6 +319,9 @@
             } else {
                 taxContainer.classList.add('hidden');
                 dynamicTaxRate = 0;
+                if(document.getElementById('countryPreset').value !== 'custom') {
+                    document.getElementById('countryPreset').value = 'custom';
+                }
             }
 
             const selectedStrategy = document.querySelector('input[name="divStrategy"]:checked').value;
@@ -273,9 +342,7 @@
             const fireTarget = Math.max(0, parseFloat(document.getElementById('fireTarget').value) || 0);
             const enableInflation = document.getElementById('enableInflation').checked;
             
-            // Prevenção de Divisão por Zero no Motor de Inflação: Limite inferior definido para -99%
             const inflationRate = Math.max(-99, Math.min(2000, parseFloat(document.getElementById('inflationRate').value) || 0));
-
             const inflationContainer = document.getElementById('inflationRateContainer');
             
             if (enableInflation) {
@@ -297,7 +364,6 @@
             let nominalHistory = [initialCapital];
             let realHistory = [initialCapital];
             
-            // Resolução do "Artefacto do Ano 0": Inicialização matemática exata a zero dividendos acumulados
             let nominalDivHistory = [0];
             let realDivHistory = [0];
             let labels = ['Year 0'];
@@ -305,9 +371,14 @@
             const monthlyDividendRate = Math.pow(1 + (dividendYield / 100), 1 / 12) - 1;
             const taxFactor = 1 - (dynamicTaxRate / 100);
 
+            // Calculate total continuous compression fee from TER and Brokerage commissions
+            const totalFeesVector = (terRate / 100) + (brokerageFee / 100);
+
             for (let y = 1; y <= years; y++) {
                 let dividendsThisYear = 0;
-                let annualGrowthNode = marketGrowth / 100;
+                // Net annual growth node adjusted directly by subtracting the expense ratios
+                let annualGrowthNode = (marketGrowth / 100) - totalFeesVector;
+                
                 if (marketRegime === 'volatile') {
                     annualGrowthNode += Math.sin(y * 1.1) * 0.07 - 0.02;
                 }
@@ -327,9 +398,13 @@
                     totalInvested += monthlyContribution;
                 }
 
+                // Application of one-off stock sale or extraordinary withdrawal event at the end of the matching year
+                if (y === sellYear) {
+                    nominalBalance = Math.max(0, nominalBalance - sellAmount);
+                }
+
                 currentMonthlySalary = currentMonthlySalary * (1 + (salaryProgression / 100));
                 
-                // Fator de inflação protegido contra taxas de -100%
                 let accumulatedInflationFactor = Math.pow(1 + (inflationRate / 100), y);
                 if (accumulatedInflationFactor <= 0) accumulatedInflationFactor = 0.0001; 
                 
@@ -350,13 +425,14 @@
                 labels.push(`Year ${y}`);
             }
 
+            // Deep background calculation loop for precise milestone detection
             if (fireYearReached === "Never" && fireTarget > 0) {
                 let deepNominalBalance = nominalBalance;
                 let deepSalary = currentMonthlySalary;
                 
                 for (let dy = years + 1; dy <= 1000; dy++) {
                     let deepDividendsThisYear = 0;
-                    let annualGrowthNode = marketGrowth / 100;
+                    let annualGrowthNode = (marketGrowth / 100) - totalFeesVector;
                     if (marketRegime === 'volatile') {
                         annualGrowthNode += Math.sin(dy * 1.1) * 0.07 - 0.02;
                     }
@@ -372,6 +448,11 @@
                         deepDividendsThisYear += netDividends;
                         deepNominalBalance = baseBalance + generatedGrowth + (netDividends * (dividendReinvest / 100));
                     }
+
+                    if (dy === sellYear) {
+                        deepNominalBalance = Math.max(0, deepNominalBalance - sellAmount);
+                    }
+
                     deepSalary = deepSalary * (1 + (salaryProgression / 100));
                     
                     let deepInflationFactor = Math.pow(1 + (inflationRate / 100), dy);
@@ -421,6 +502,7 @@
         initChart();
         calculateSimulation();
 
+        // Branding footer script block
         (function() {
             const branding = document.createElement('div');
             branding.innerText = "GitHub - CardosoMartim";
