@@ -34,3 +34,5 @@ Cash Flow Security: The system accounts for capital "leakage" if you choose not 
 
 📜 License
 This project is open-source and available under the MIT License.
+
+localhost: npx http-server
