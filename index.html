@@ -3,18 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Wealth Engine v4.0.0</title>
+    <title>Quantum Wealth Engine v4.1.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Desativa as setas/spinners nativos de inputs numéricos em motores Chromium (Chrome, Edge, Safari) */
         .custom-number-input::-webkit-outer-spin-button,
         .custom-number-input::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
-
-        /* Desativa as setas nativas em ambientes Mozilla Firefox */
         .custom-number-input {
             -moz-appearance: textfield;
         }
@@ -333,15 +330,24 @@
                         </div>
                         
                         <div id="eventsContainer" class="space-y-2 max-h-56 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-800">
-                            <div class="event-row grid grid-cols-3 gap-2 items-center bg-slate-950 p-2 rounded-lg border border-slate-900">
-                                <span class="text-[9px] font-bold uppercase text-slate-500 row-label">Event #1</span>
-                                <div>
-                                    <label class="block text-[8px] font-bold uppercase text-slate-400 mb-0.5">Year</label>
-                                    <input type="number" class="event-year w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="5" min="0">
+                            <div class="event-row space-y-1 bg-slate-950 p-2 rounded-lg border border-slate-900">
+                                <div class="grid grid-cols-4 gap-2 items-center">
+                                    <span class="text-[9px] font-bold uppercase text-slate-500 row-label">Event #1</span>
+                                    <div>
+                                        <label class="block text-[8px] font-bold uppercase text-slate-400 mb-0.5">Year</label>
+                                        <input type="number" class="event-year w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="5" min="0">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[8px] font-bold uppercase text-slate-400 mb-0.5">Gross (<span class="currency-symbol">$</span>)</label>
+                                        <input type="number" class="event-amount w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="0" min="0">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[8px] font-bold uppercase text-slate-400 mb-0.5">Tax (%)</label>
+                                        <input type="number" class="event-tax w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="28" min="0" max="100">
+                                    </div>
                                 </div>
-                                <div>
-                                    <label class="block text-[8px] font-bold uppercase text-slate-400 mb-0.5">Amount (<span class="currency-symbol">$</span>)</label>
-                                    <input type="number" class="event-amount w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="0" min="0">
+                                <div class="text-[9px] text-slate-400 text-right font-medium pr-1">
+                                    Net Liquid: <span class="event-net-display font-bold text-purple-400">$0</span>
                                 </div>
                             </div>
                         </div>
@@ -481,17 +487,23 @@
             eventCounter++;
             const container = document.getElementById('eventsContainer');
             const newRow = document.createElement('div');
-            newRow.className = "event-row grid grid-cols-3 gap-2 items-center bg-slate-950 p-2 rounded-lg border border-slate-900";
-            
-            let activeSymbol = document.getElementById('currencySelect').options[document.getElementById('currencySelect').selectedIndex].getAttribute('data-symbol') || '$';
+            newRow.className = "event-row space-y-1 bg-slate-950 p-2 rounded-lg border border-slate-900";
             
             newRow.innerHTML = `
-                <span class="text-[9px] font-bold uppercase text-slate-500 row-label">Event #${eventCounter}</span>
-                <div>
-                    <input type="number" class="event-year w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="${eventCounter * 5}" min="0">
+                <div class="grid grid-cols-4 gap-2 items-center">
+                    <span class="text-[9px] font-bold uppercase text-slate-500 row-label">Event #${eventCounter}</span>
+                    <div>
+                        <input type="number" class="event-year w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="${eventCounter * 5}" min="0">
+                    </div>
+                    <div>
+                        <input type="number" class="event-amount w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="0" min="0">
+                    </div>
+                    <div>
+                        <input type="number" class="event-tax w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="28" min="0" max="100">
+                    </div>
                 </div>
-                <div>
-                    <input type="number" class="event-amount w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="0" min="0">
+                <div class="text-[9px] text-slate-400 text-right font-medium pr-1">
+                    Net Liquid: <span class="event-net-display font-bold text-purple-400">$0</span>
                 </div>
             `;
             container.appendChild(newRow);
@@ -517,7 +529,6 @@
         });
 
         function calculateSimulation() {
-            // Atualização Dinâmica de Símbolos Textuais via DOM
             const activeSymbol = document.getElementById('currencySelect').options[document.getElementById('currencySelect').selectedIndex].getAttribute('data-symbol') || '$';
             const currentCurrency = document.getElementById('currencySelect').value || 'USD';
             
@@ -538,11 +549,24 @@
             activeRows.forEach(row => {
                 const yearField = row.querySelector('.event-year');
                 const amountField = row.querySelector('.event-amount');
+                const taxField = row.querySelector('.event-tax');
+                const netDisplay = row.querySelector('.event-net-display');
+                
                 if (yearField && amountField) {
+                    const gross = Math.max(0, parseFloat(amountField.value) || 0);
+                    const taxRate = Math.max(0, Math.min(100, parseFloat(taxField ? taxField.value : 0) || 0));
+                    const net = gross * (1 - taxRate / 100);
+                    
                     liquidations.push({
                         year: Math.max(0, parseInt(yearField.value) || 0),
-                        amount: Math.max(0, parseFloat(amountField.value) || 0)
+                        gross: gross,
+                        tax: taxRate,
+                        net: net
                     });
+
+                    if (netDisplay) {
+                        netDisplay.innerText = new Intl.NumberFormat('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 }).format(net);
+                    }
                 }
             });
 
@@ -590,7 +614,6 @@
                 document.getElementById('realValueDisplay').className = "text-xs font-black text-slate-500/50 mt-0.5";
             }
 
-            // INJEÇÃO DA MOEDA SELECIONADA NO CONTEXTO DE INFLAÇÃO
             const fireTargetHelp = document.getElementById('fireTargetHelp');
             if (enableInflation && inflationRate > 0) {
                 const finalInflationFactor = Math.pow(1 + (inflationRate / 100), years);
@@ -641,7 +664,7 @@
 
                 liquidations.forEach(event => {
                     if (y === event.year) {
-                        nominalBalance = Math.max(0, nominalBalance - event.amount);
+                        nominalBalance = Math.max(0, nominalBalance - event.gross);
                     }
                 });
 
@@ -689,7 +712,7 @@
 
                     liquidations.forEach(event => {
                         if (dy === event.year) {
-                            deepNominalBalance = Math.max(0, deepNominalBalance - event.amount);
+                            deepNominalBalance = Math.max(0, deepNominalBalance - event.gross);
                         }
                     });
                     deepSalary = deepSalary * (1 + (salaryProgression / 100));
@@ -726,7 +749,6 @@
             const finalReal = realHistory[realHistory.length - 1];
             const finalNominalDivs = nominalDivHistory[nominalDivHistory.length - 1];
 
-            // Renderização Formatada de acordo com o ISO da Moeda Ativa
             document.getElementById('nominalValueDisplay').innerText = finalNominal.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 });
             document.getElementById('realValueDisplay').innerText = enableInflation ? finalReal.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 }) : "Off";
             document.getElementById('annualDivDisplay').innerText = finalNominalDivs.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 });
@@ -756,7 +778,6 @@
             document.body.appendChild(branding);
         })();
 
-        // Listener reativo global injetado automaticamente para capturar alterações no select de moedas
         const allControls = document.querySelectorAll('input, select');
         allControls.forEach(control => {
             control.addEventListener('input', calculateSimulation);
