@@ -3,9 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Wealth Engine v3.9.1</title>
+    <title>Quantum Wealth Engine v4.0.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Desativa as setas/spinners nativos de inputs numéricos em motores Chromium (Chrome, Edge, Safari) */
+        .custom-number-input::-webkit-outer-spin-button,
+        .custom-number-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Desativa as setas nativas em ambientes Mozilla Firefox */
+        .custom-number-input {
+            -moz-appearance: textfield;
+        }
+    </style>
 </head>
 <body class="bg-[#020617] text-slate-100 min-h-screen flex flex-col items-center justify-start p-4 md:p-8 font-sans selection:bg-cyan-500 selection:text-black">
 
@@ -31,16 +44,46 @@
                     <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>Active Income
                 </h2>
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Gross Monthly Salary ($)</label>
-                    <input type="number" id="grossSalary" value="1500" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm font-medium">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Gross Monthly Salary (<span class="currency-symbol">$</span>)</label>
+                    <div class="relative">
+                        <input type="number" id="grossSalary" value="1500" class="w-full p-2.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm font-medium custom-number-input">
+                        <div class="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 z-10">
+                            <button type="button" onclick="document.getElementById('grossSalary').stepUp(); document.getElementById('grossSalary').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-cyan-400 transition-colors focus:outline-none p-0.5">
+                                <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+                            </button>
+                            <button type="button" onclick="document.getElementById('grossSalary').stepDown(); document.getElementById('grossSalary').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-cyan-400 transition-colors focus:outline-none p-0.5">
+                                <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Annual Salary Progression (%)</label>
-                    <input type="number" id="salaryProgression" value="3" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm font-medium">
+                    <div class="relative">
+                        <input type="number" id="salaryProgression" value="3" class="w-full p-2.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm font-medium custom-number-input">
+                        <div class="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 z-10">
+                            <button type="button" onclick="document.getElementById('salaryProgression').stepUp(); document.getElementById('salaryProgression').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-cyan-400 transition-colors focus:outline-none p-0.5">
+                                <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+                            </button>
+                            <button type="button" onclick="document.getElementById('salaryProgression').stepDown(); document.getElementById('salaryProgression').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-cyan-400 transition-colors focus:outline-none p-0.5">
+                                <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Salary Invested (%)</label>
-                    <input type="number" id="investRate" value="20" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm font-medium">
+                    <div class="relative">
+                        <input type="number" id="investRate" value="20" class="w-full p-2.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition text-sm font-medium custom-number-input">
+                        <div class="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 z-10">
+                            <button type="button" onclick="document.getElementById('investRate').stepUp(); document.getElementById('investRate').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-cyan-400 transition-colors focus:outline-none p-0.5">
+                                <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+                            </button>
+                            <button type="button" onclick="document.getElementById('investRate').stepDown(); document.getElementById('investRate').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-cyan-400 transition-colors focus:outline-none p-0.5">
+                                <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -49,36 +92,86 @@
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Market Assets & Fees
                 </h2>
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Initial Capital ($)</label>
-                    <input type="number" id="initialCapital" value="5000" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Initial Capital (<span class="currency-symbol">$</span>)</label>
+                    <div class="relative">
+                        <input type="number" id="initialCapital" value="5000" class="w-full p-2.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium custom-number-input">
+                        <div class="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 z-10">
+                            <button type="button" onclick="document.getElementById('initialCapital').stepUp(); document.getElementById('initialCapital').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-emerald-400 transition-colors focus:outline-none p-0.5">
+                                <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+                            </button>
+                            <button type="button" onclick="document.getElementById('initialCapital').stepDown(); document.getElementById('initialCapital').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-emerald-400 transition-colors focus:outline-none p-0.5">
+                                <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Growth (%)</label>
-                        <input type="number" id="marketGrowth" value="7" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
+                        <div class="relative">
+                            <input type="number" id="marketGrowth" value="7" class="w-full p-2.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium custom-number-input">
+                            <div class="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 z-10">
+                                <button type="button" onclick="document.getElementById('marketGrowth').stepUp(); document.getElementById('marketGrowth').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-emerald-400 transition-colors focus:outline-none p-0.5">
+                                    <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+                                </button>
+                                <button type="button" onclick="document.getElementById('marketGrowth').stepDown(); document.getElementById('marketGrowth').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-emerald-400 transition-colors focus:outline-none p-0.5">
+                                    <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Div Yield (%)</label>
-                        <input type="number" id="dividendYield" value="3" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium">
+                        <div class="relative">
+                            <input type="number" id="dividendYield" value="3" class="w-full p-2.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-sm font-medium custom-number-input">
+                            <div class="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 z-10">
+                                <button type="button" onclick="document.getElementById('dividendYield').stepUp(); document.getElementById('dividendYield').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-emerald-400 transition-colors focus:outline-none p-0.5">
+                                    <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+                                </button>
+                                <button type="button" onclick="document.getElementById('dividendYield').stepDown(); document.getElementById('dividendYield').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-emerald-400 transition-colors focus:outline-none p-0.5">
+                                    <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="space-y-2 pt-1 border-t border-slate-800/40">
+                <div class="space-y-2 pt-2 border-t border-slate-800/40">
                     <div>
-                        <div class="flex justify-between items-center">
+                        <div class="flex justify-between items-center mb-1">
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">TER / Fund Fee (%)</label>
-                            <span class="text-[9px] text-slate-500 lowercase italic">Internal fund drag</span>
+                            <span class="text-[9px] text-slate-500 lowercase italic pt-0.5">Internal fund drag</span>
                         </div>
-                        <input type="number" id="terRate" value="0.2" step="0.01" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-xs font-medium">
-                        <p class="text-[9px] text-slate-500 mt-0.5 leading-tight">Total Expense Ratio. Annual internal fee charged automatically by the ETF/Fund (e.g., iShares/Vanguard).</p>
+                        <div class="relative">
+                            <input type="number" id="terRate" value="0.2" step="0.01" class="w-full p-2 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-xs font-medium custom-number-input">
+                            <div class="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 z-10">
+                                <button type="button" onclick="document.getElementById('terRate').stepUp(); document.getElementById('terRate').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-emerald-400 transition-colors focus:outline-none p-0.5">
+                                    <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+                                </button>
+                                <button type="button" onclick="document.getElementById('terRate').stepDown(); document.getElementById('terRate').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-emerald-400 transition-colors focus:outline-none p-0.5">
+                                    <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-[9px] text-slate-500 mt-1 leading-tight">Total Expense Ratio. Annual internal fee charged automatically by the ETF/Fund.</p>
                     </div>
                     <div>
-                        <div class="flex justify-between items-center">
+                        <div class="flex justify-between items-center mb-1">
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Brokerage Fee (%)</label>
-                            <span class="text-[9px] text-slate-500 lowercase italic">Platform custody</span>
+                            <span class="text-[9px] text-slate-500 lowercase italic pt-0.5">Platform custody</span>
                         </div>
-                        <input type="number" id="brokerageFee" value="0.1" step="0.01" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-xs font-medium">
-                        <p class="text-[9px] text-slate-500 mt-0.5 leading-tight">Annual platform maintenance, custody, or average transactional fee charged by your broker.</p>
+                        <div class="relative">
+                            <input type="number" id="brokerageFee" value="0.1" step="0.01" class="w-full p-2 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-xs font-medium custom-number-input">
+                            <div class="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 z-10">
+                                <button type="button" onclick="document.getElementById('brokerageFee').stepUp(); document.getElementById('brokerageFee').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-emerald-400 transition-colors focus:outline-none p-0.5">
+                                    <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+                                </button>
+                                <button type="button" onclick="document.getElementById('brokerageFee').stepDown(); document.getElementById('brokerageFee').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-emerald-400 transition-colors focus:outline-none p-0.5">
+                                    <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-[9px] text-slate-500 mt-1 leading-tight">Annual platform maintenance, custody, or average transactional fee charged by your broker.</p>
                     </div>
                 </div>
             </div>
@@ -94,7 +187,17 @@
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Horizon Simulation (Years)</label>
-                    <input type="number" id="years" value="25" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition text-sm font-medium">
+                    <div class="relative">
+                        <input type="number" id="years" value="25" class="w-full p-2.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition text-sm font-medium custom-number-input">
+                        <div class="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 z-10">
+                            <button type="button" onclick="document.getElementById('years').stepUp(); document.getElementById('years').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-amber-400 transition-colors focus:outline-none p-0.5">
+                                <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+                            </button>
+                            <button type="button" onclick="document.getElementById('years').stepDown(); document.getElementById('years').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-amber-400 transition-colors focus:outline-none p-0.5">
+                                <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="grid grid-cols-2 gap-2 pt-1">
@@ -134,6 +237,22 @@
                 
                 <div class="space-y-4">
                     <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Global Currency Vector (Localização)</label>
+                        <select id="currencySelect" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-xs font-medium h-10">
+                            <option value="USD" data-symbol="$" selected>USD ($) - US Dollar</option>
+                            <option value="EUR" data-symbol="€">EUR (€) - Euro</option>
+                            <option value="GBP" data-symbol="£">GBP (£) - British Pound</option>
+                            <option value="BRL" data-symbol="R$">BRL (R$) - Brazilian Real</option>
+                            <option value="JPY" data-symbol="¥">JPY (¥) - Japanese Yen</option>
+                            <option value="CHF" data-symbol="CHF">CHF (CHF) - Swiss Franc</option>
+                            <option value="CAD" data-symbol="C$">CAD (C$) - Canadian Dollar</option>
+                            <option value="AUD" data-symbol="A$">AUD (A$) - Australian Dollar</option>
+                            <option value="INR" data-symbol="₹">INR (₹) - Indian Rupee</option>
+                            <option value="CNY" data-symbol="¥">CNY (¥) - Chinese Yuan</option>
+                        </select>
+                    </div>
+
+                    <div>
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Select Jurisdiction Preset</label>
                         <select id="countryPreset" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-xs font-medium h-10">
                             <option value="custom">Custom Configuration (Manual)</option>
@@ -160,7 +279,17 @@
 
                     <div id="customTaxContainer" class="bg-slate-950/50 border border-slate-800 p-3 rounded-xl transition-all duration-200">
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">What is your dividend tax rate (%)?</label>
-                        <input type="number" id="dividendTax" value="28" min="0" max="100" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-xs font-semibold">
+                        <div class="relative">
+                            <input type="number" id="dividendTax" value="28" min="0" max="100" class="w-full p-2 pr-10 rounded-lg bg-slate-900 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-xs font-semibold custom-number-input">
+                            <div class="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 z-10">
+                                <button type="button" onclick="document.getElementById('dividendTax').stepUp(); document.getElementById('dividendTax').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-purple-400 transition-colors focus:outline-none p-0.5">
+                                    <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+                                </button>
+                                <button type="button" onclick="document.getElementById('dividendTax').stepDown(); document.getElementById('dividendTax').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-purple-400 transition-colors focus:outline-none p-0.5">
+                                    <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <div>
@@ -179,7 +308,17 @@
 
                     <div id="customReinvestContainer" class="hidden bg-slate-950/50 border border-slate-800 p-3 rounded-xl transition-all duration-200">
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Percentage of Net Dividends to Reinvest (%)</label>
-                        <input type="number" id="dividendReinvest" value="100" min="0" max="100" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-xs font-semibold">
+                        <div class="relative">
+                            <input type="number" id="dividendReinvest" value="100" min="0" max="100" class="w-full p-2 pr-10 rounded-lg bg-slate-900 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-xs font-semibold custom-number-input">
+                            <div class="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 z-10">
+                                <button type="button" onclick="document.getElementById('dividendReinvest').stepUp(); document.getElementById('dividendReinvest').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-purple-400 transition-colors focus:outline-none p-0.5">
+                                    <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+                                </button>
+                                <button type="button" onclick="document.getElementById('dividendReinvest').stepDown(); document.getElementById('dividendReinvest').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-purple-400 transition-colors focus:outline-none p-0.5">
+                                    <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+                            </div>
+                        </div>
                         <p class="text-[9px] text-slate-500 mt-1">The remaining slice is withdrawn from the portfolio.</p>
                     </div>
                 </div>
@@ -198,16 +337,16 @@
                                 <span class="text-[9px] font-bold uppercase text-slate-500 row-label">Event #1</span>
                                 <div>
                                     <label class="block text-[8px] font-bold uppercase text-slate-400 mb-0.5">Year</label>
-                                    <input type="number" class="event-year w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs" value="5" min="0">
+                                    <input type="number" class="event-year w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="5" min="0">
                                 </div>
                                 <div>
-                                    <label class="block text-[8px] font-bold uppercase text-slate-400 mb-0.5">Amount ($)</label>
-                                    <input type="number" class="event-amount w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs" value="0" min="0">
+                                    <label class="block text-[8px] font-bold uppercase text-slate-400 mb-0.5">Amount (<span class="currency-symbol">$</span>)</label>
+                                    <input type="number" class="event-amount w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="0" min="0">
                                 </div>
                             </div>
                         </div>
 
-                        <p class="text-[9px] text-slate-500 leading-tight">*Note: Simulates sequential large expenses (e.g., house down-payments, corporate ventures, cars) at specific structural years.</p>
+                        <p class="text-[9px] text-slate-500 leading-tight">*Note: Simulates sequential large expenses at specific structural years.</p>
                     </div>
 
                     <div>
@@ -221,10 +360,20 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <div class="flex justify-between items-center mb-1">
-                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">FIRE Monthly Goal ($)</label>
-                                <span class="text-[9px] text-slate-500 lowercase italic">Real purchasing power</span>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">FIRE Monthly Goal (<span class="currency-symbol">$</span>)</label>
+                                <span class="text-[9px] text-slate-500 lowercase italic pt-0.5">Real power</span>
                             </div>
-                            <input type="number" id="fireTarget" value="1500" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium h-10">
+                            <div class="relative">
+                                <input type="number" id="fireTarget" value="1500" class="w-full p-2.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium h-10 custom-number-input">
+                                <div class="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 z-10">
+                                    <button type="button" onclick="document.getElementById('fireTarget').stepUp(); document.getElementById('fireTarget').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-purple-400 transition-colors focus:outline-none p-0.5">
+                                        <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+                                    </button>
+                                    <button type="button" onclick="document.getElementById('fireTarget').stepDown(); document.getElementById('fireTarget').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-purple-400 transition-colors focus:outline-none p-0.5">
+                                        <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <div class="flex flex-col justify-end pb-0.5">
                             <label class="flex items-center space-x-3 cursor-pointer bg-slate-950/60 border border-slate-800 p-2 rounded-xl h-10 select-none transition hover:border-slate-700">
@@ -237,7 +386,17 @@
                     <div id="inflationRateContainer" class="hidden bg-slate-950/40 border border-slate-800/60 p-4 rounded-xl space-y-2">
                         <div>
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Annual Inflation Rate (%)</label>
-                            <input type="number" id="inflationRate" value="2.5" step="0.1" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium">
+                            <div class="relative">
+                                <input type="number" id="inflationRate" value="2.5" step="0.1" class="w-full p-2.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium custom-number-input">
+                                <div class="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 z-10">
+                                    <button type="button" onclick="document.getElementById('inflationRate').stepUp(); document.getElementById('inflationRate').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-purple-400 transition-colors focus:outline-none p-0.5">
+                                        <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+                                    </button>
+                                    <button type="button" onclick="document.getElementById('inflationRate').stepDown(); document.getElementById('inflationRate').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-purple-400 transition-colors focus:outline-none p-0.5">
+                                        <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -267,11 +426,11 @@
                 data: {
                     labels: [],
                     datasets: [
-                        { label: 'Total Invested Capital', data: [], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, borderDash: [4, 4], pointRadius: 0, pointHoverRadius: 4 },
+                        { label: 'Total Invested Capital', data: [], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, borderDash: [6, 4], pointRadius: 0, pointHoverRadius: 4 },
                         { label: 'Nominal Wealth', data: [], borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.01)', borderWidth: 3, fill: true, tension: 0.15, pointRadius: 0, pointHoverRadius: 5 },
                         { label: 'Real Wealth (Inflation)', data: [], borderColor: '#06b6d4', backgroundColor: 'rgba(6, 182, 212, 0.01)', borderWidth: 3, fill: true, tension: 0.15, pointRadius: 0, pointHoverRadius: 5 },
                         { label: 'Nominal Annual Dividends', data: [], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.15, pointRadius: 0, pointHoverRadius: 5 },
-                        { label: 'Real Annual Dividends', data: [], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, borderDash: [2, 2], tension: 0.15, pointRadius: 0, pointHoverRadius: 5 }
+                        { label: 'Real Annual Dividends', data: [], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, borderDash: [], tension: 0.15, pointRadius: 0, pointHoverRadius: 5 }
                     ]
                 },
                 options: {
@@ -279,7 +438,10 @@
                     maintainAspectRatio: false,
                     interaction: { mode: 'index', intersect: false },
                     plugins: {
-                        legend: { labels: { color: '#94a3b8', font: { size: 10, weight: '600' }, boxWidth: 30, boxHeight: 2, usePointStyle: false } },
+                        legend: { 
+                            position: 'bottom',
+                            labels: { color: '#94a3b8', font: { size: 10, weight: '600' }, boxWidth: 24, boxHeight: 2, usePointStyle: false } 
+                        },
                         tooltip: {
                             backgroundColor: '#0f172a', titleColor: '#94a3b8', bodyColor: '#f8fafc', borderColor: '#334155', borderWidth: 1, padding: 10, borderRadius: 6,
                             callbacks: {
@@ -287,7 +449,8 @@
                                     let label = context.dataset.label || '';
                                     if (label) { label += ': '; }
                                     if (context.parsed.y !== null) {
-                                        label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(context.parsed.y);
+                                        let currentCurrency = document.getElementById('currencySelect').value || 'USD';
+                                        label += new Intl.NumberFormat('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 }).format(context.parsed.y);
                                     }
                                     return label;
                                 }
@@ -296,7 +459,19 @@
                     },
                     scales: {
                         x: { grid: { color: 'rgba(51, 65, 85, 0.05)' }, ticks: { color: '#64748b', font: { size: 9 } } },
-                        y: { grid: { color: 'rgba(51, 65, 85, 0.05)' }, ticks: { color: '#64748b', font: { size: 9 }, callback: function(value) { if (value >= 1e6) return '$' + (value / 1e6).toFixed(1) + 'M'; if (value >= 1e3) return '$' + (value / 1e3).toFixed(0) + 'k'; return '$' + value; } } }
+                        y: { 
+                            grid: { color: 'rgba(51, 65, 85, 0.05)' }, 
+                            ticks: { 
+                                color: '#64748b', 
+                                font: { size: 9 }, 
+                                callback: function(value) { 
+                                    let symbol = document.getElementById('currencySelect').options[document.getElementById('currencySelect').selectedIndex].getAttribute('data-symbol') || '$';
+                                    if (value >= 1e6) return symbol + (value / 1e6).toFixed(1) + 'M';
+                                    if (value >= 1e3) return symbol + (value / 1e3).toFixed(0) + 'k'; 
+                                    return symbol + value;
+                                } 
+                            } 
+                        }
                     }
                 }
             });
@@ -308,23 +483,23 @@
             const newRow = document.createElement('div');
             newRow.className = "event-row grid grid-cols-3 gap-2 items-center bg-slate-950 p-2 rounded-lg border border-slate-900";
             
+            let activeSymbol = document.getElementById('currencySelect').options[document.getElementById('currencySelect').selectedIndex].getAttribute('data-symbol') || '$';
+            
             newRow.innerHTML = `
                 <span class="text-[9px] font-bold uppercase text-slate-500 row-label">Event #${eventCounter}</span>
                 <div>
-                    <input type="number" class="event-year w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs" value="${eventCounter * 5}" min="0">
+                    <input type="number" class="event-year w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="${eventCounter * 5}" min="0">
                 </div>
                 <div>
-                    <input type="number" class="event-amount w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs" value="0" min="0">
+                    <input type="number" class="event-amount w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="0" min="0">
                 </div>
             `;
-            
             container.appendChild(newRow);
 
             newRow.querySelectorAll('input').forEach(input => {
                 input.addEventListener('input', calculateSimulation);
                 input.addEventListener('change', calculateSimulation);
             });
-
             calculateSimulation();
         });
 
@@ -342,15 +517,19 @@
         });
 
         function calculateSimulation() {
+            // Atualização Dinâmica de Símbolos Textuais via DOM
+            const activeSymbol = document.getElementById('currencySelect').options[document.getElementById('currencySelect').selectedIndex].getAttribute('data-symbol') || '$';
+            const currentCurrency = document.getElementById('currencySelect').value || 'USD';
+            
+            document.querySelectorAll('.currency-symbol').forEach(el => el.innerText = activeSymbol);
+
             const initialCapital = Math.max(0, parseFloat(document.getElementById('initialCapital').value) || 0);
             const grossSalary = Math.max(0, parseFloat(document.getElementById('grossSalary').value) || 0);
-            
             const salaryProgression = Math.max(-20, Math.min(300, parseFloat(document.getElementById('salaryProgression').value) || 0));
             const investRate = Math.max(0, Math.min(100, parseFloat(document.getElementById('investRate').value) || 0));
             const marketGrowth = Math.max(-95, Math.min(500, parseFloat(document.getElementById('marketGrowth').value) || 0));
             const dividendYield = Math.max(0, Math.min(100, parseFloat(document.getElementById('dividendYield').value) || 0));
             const years = Math.max(1, Math.min(100, parseInt(document.getElementById('years').value) || 0));
-
             const terRate = Math.max(0, Math.min(20, parseFloat(document.getElementById('terRate').value) || 0));
             const brokerageFee = Math.max(0, Math.min(20, parseFloat(document.getElementById('brokerageFee').value) || 0));
 
@@ -370,7 +549,6 @@
             const selectedTaxOption = document.querySelector('input[name="hasTax"]:checked').value;
             const taxContainer = document.getElementById('customTaxContainer');
             let dynamicTaxRate = 0;
-
             if (selectedTaxOption === 'yes') {
                 taxContainer.classList.remove('hidden');
                 dynamicTaxRate = Math.max(0, Math.min(100, parseFloat(document.getElementById('dividendTax').value) || 0));
@@ -405,28 +583,27 @@
             if (enableInflation) {
                 inflationContainer.classList.remove('hidden');
                 document.getElementById('realWealthTitle').className = "text-[9px] uppercase font-bold text-cyan-400 tracking-wider";
-                document.getElementById('fireMilestoneTitle').className = "text-[9px] uppercase font-bold text-purple-400 tracking-wider";
+                document.getElementById('realValueDisplay').className = "text-xs font-black text-cyan-400 mt-0.5";
             } else {
                 inflationContainer.classList.add('hidden');
                 document.getElementById('realWealthTitle').className = "text-[9px] uppercase font-bold text-slate-500 tracking-wider";
-                document.getElementById('fireMilestoneTitle').className = "text-[9px] uppercase font-bold text-purple-400 tracking-wider";
+                document.getElementById('realValueDisplay').className = "text-xs font-black text-slate-500/50 mt-0.5";
             }
 
-            // CRITICAL INFLATION VECTOR INJECTION ON FIRE OBJECTIVE
+            // INJEÇÃO DA MOEDA SELECIONADA NO CONTEXTO DE INFLAÇÃO
             const fireTargetHelp = document.getElementById('fireTargetHelp');
             if (enableInflation && inflationRate > 0) {
                 const finalInflationFactor = Math.pow(1 + (inflationRate / 100), years);
                 const nominalRequired = fireTarget * finalInflationFactor;
-                fireTargetHelp.innerHTML = `🛡️ <b>Real Target:</b> To maintain the purchasing power of <span class="text-purple-400 font-bold">$${fireTarget.toLocaleString('en-US')}</span> from today in Year ${years} (with an inflation rate of ${inflationRate}%), you will require a monthly nominal return of <span class="text-purple-400 font-bold">$${Math.round(nominalRequired).toLocaleString('en-US')}</span>.`;
+                fireTargetHelp.innerHTML = `🛡️ <b>Real Target:</b> To maintain the purchasing power of <span class="text-purple-400 font-bold">${activeSymbol}${fireTarget.toLocaleString('en-US')}</span> from today in Year ${years} (with an inflation rate of ${inflationRate}%), you will require a monthly nominal return of <span class="text-purple-400 font-bold">${activeSymbol}${Math.round(nominalRequired).toLocaleString('en-US')}</span>.`;
             } else {
-                fireTargetHelp.innerHTML = `⚙️ Your target is fixed at <span class="text-slate-300 font-bold">$${fireTarget.toLocaleString('en-US')}</span> nominal per month. The inflation engine is disabled or null.`;
+                fireTargetHelp.innerHTML = `⚙️ Your target is fixed at <span class="text-slate-300 font-bold">${activeSymbol}${fireTarget.toLocaleString('en-US')}</span> nominal per month. The inflation engine is disabled or null.`;
             }
 
             let nominalBalance = initialCapital;
             let totalInvested = initialCapital;
             let currentMonthlySalary = grossSalary;
-            let fireYearReached = fireTarget > 0 ? "Never" : "Off"; 
-
+            let fireYearReached = fireTarget > 0 ? "Never" : "Off";
             let investedHistory = [initialCapital];
             let nominalHistory = [initialCapital];
             let realHistory = [initialCapital];
@@ -469,15 +646,12 @@
                 });
 
                 currentMonthlySalary = currentMonthlySalary * (1 + (salaryProgression / 100));
-                
                 let accumulatedInflationFactor = Math.pow(1 + (inflationRate / 100), y);
-                if (accumulatedInflationFactor <= 0) accumulatedInflationFactor = 0.0001; 
-                
+                if (accumulatedInflationFactor <= 0) accumulatedInflationFactor = 0.0001;
                 let currentRealBalance = nominalBalance / accumulatedInflationFactor;
                 let currentRealDividends = dividendsThisYear / accumulatedInflationFactor;
 
                 const targetDividendsToCheck = enableInflation ? currentRealDividends : dividendsThisYear;
-
                 if (fireYearReached === "Never" && (targetDividendsToCheck / 12) >= fireTarget) {
                     fireYearReached = `Year ${y}`;
                 }
@@ -518,7 +692,6 @@
                             deepNominalBalance = Math.max(0, deepNominalBalance - event.amount);
                         }
                     });
-
                     deepSalary = deepSalary * (1 + (salaryProgression / 100));
                     
                     let deepInflationFactor = Math.pow(1 + (inflationRate / 100), dy);
@@ -553,9 +726,10 @@
             const finalReal = realHistory[realHistory.length - 1];
             const finalNominalDivs = nominalDivHistory[nominalDivHistory.length - 1];
 
-            document.getElementById('nominalValueDisplay').innerText = finalNominal.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
-            document.getElementById('realValueDisplay').innerText = enableInflation ? finalReal.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) : "Off";
-            document.getElementById('annualDivDisplay').innerText = finalNominalDivs.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+            // Renderização Formatada de acordo com o ISO da Moeda Ativa
+            document.getElementById('nominalValueDisplay').innerText = finalNominal.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 });
+            document.getElementById('realValueDisplay').innerText = enableInflation ? finalReal.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 }) : "Off";
+            document.getElementById('annualDivDisplay').innerText = finalNominalDivs.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 });
             
             document.getElementById('fireMilestoneDisplay').innerText = fireYearReached;
             if (fireYearReached !== "Off" && fireYearReached !== "Never" && fireYearReached !== "> 1000 Years") {
@@ -582,6 +756,7 @@
             document.body.appendChild(branding);
         })();
 
+        // Listener reativo global injetado automaticamente para capturar alterações no select de moedas
         const allControls = document.querySelectorAll('input, select');
         allControls.forEach(control => {
             control.addEventListener('input', calculateSimulation);
