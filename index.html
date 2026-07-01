@@ -153,6 +153,7 @@
 
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Compounding Frequency</label>
+                    <p class="text-[9px] text-slate-500 italic mb-1.5 leading-tight">«Specifies how often accrued interest is reinvested into the principal.»</p>
                     <select id="compoundingFrequency" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-xs font-medium h-10">
                         <option value="12" selected>Monthly (12/Year)</option>
                         <option value="4">Quarterly (4/Year)</option>
@@ -165,7 +166,7 @@
                     <div>
                         <div class="flex justify-between items-center mb-1">
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">TER / Fund Fee (%)</label>
-                            <span class="text-[9px] text-slate-500 lowercase italic pt-0.5">Internal fund drag</span>
+                            <span class="text-[9px] text-slate-500 italic pt-0.5">*Internal Fund Drag</span>
                         </div>
                         <div class="relative">
                             <input type="number" id="terRate" value="0.2" step="0.01" class="w-full p-2 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-xs font-medium custom-number-input">
@@ -182,7 +183,7 @@
                     <div>
                         <div class="flex justify-between items-center mb-1">
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Brokerage Fee (%)</label>
-                            <span class="text-[9px] text-slate-500 lowercase italic pt-0.5">Platform custody</span>
+                            <span class="text-[9px] text-slate-500 italic pt-0.5">*Platform Custody</span>
                         </div>
                         <div class="relative">
                             <input type="number" id="brokerageFee" value="0.1" step="0.01" class="w-full p-2 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-xs font-medium custom-number-input">
@@ -372,7 +373,6 @@
                         <div>
                             <div class="flex justify-between items-center mb-1">
                                 <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">FIRE Monthly Goal (<span class="currency-symbol">$</span>)</label>
-                                <span class="text-[9px] text-slate-500 lowercase italic pt-0.5">Real power</span>
                             </div>
                             <div class="relative">
                                 <input type="number" id="fireTarget" value="1500" class="w-full p-2.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium h-10 custom-number-input">
