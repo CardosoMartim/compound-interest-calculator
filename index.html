@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Wealth Engine v4.1.0</title>
+    <title>Quantum Wealth Engine v4.4.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         .custom-number-input::-webkit-outer-spin-button,
         .custom-number-input::-webkit-inner-spin-button {
@@ -14,6 +15,23 @@
         }
         .custom-number-input {
             -moz-appearance: textfield;
+            appearance: none;
+        }
+
+        /* CUSTOMIZAÇÃO PREMIUM DA BARRA DE ROLAGEM DA INLINE DATA MATRIX */
+        #matrixContainer::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        #matrixContainer::-webkit-scrollbar-track {
+            background: #020617; /* Fundo idêntico ao dark mode do site */
+        }
+        #matrixContainer::-webkit-scrollbar-thumb {
+            background: #1e293b; /* Slate discreto para integrar no layout */
+            border-radius: 9999px;
+        }
+        #matrixContainer::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4; /* Destaque em Cyan interativo */
         }
     </style>
 </head>
@@ -132,7 +150,17 @@
                         </div>
                     </div>
                 </div>
-                
+
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Compounding Frequency</label>
+                    <select id="compoundingFrequency" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition text-xs font-medium h-10">
+                        <option value="12" selected>Monthly (12/Year)</option>
+                        <option value="4">Quarterly (4/Year)</option>
+                        <option value="2">Semi-Annually (2/Year)</option>
+                        <option value="1">Annually (1/Year)</option>
+                    </select>
+                </div>
+                 
                 <div class="space-y-2 pt-2 border-t border-slate-800/40">
                     <div>
                         <div class="flex justify-between items-center mb-1">
@@ -150,7 +178,6 @@
                                 </button>
                             </div>
                         </div>
-                        <p class="text-[9px] text-slate-500 mt-1 leading-tight">Total Expense Ratio. Annual internal fee charged automatically by the ETF/Fund.</p>
                     </div>
                     <div>
                         <div class="flex justify-between items-center mb-1">
@@ -168,7 +195,6 @@
                                 </button>
                             </div>
                         </div>
-                        <p class="text-[9px] text-slate-500 mt-1 leading-tight">Annual platform maintenance, custody, or average transactional fee charged by your broker.</p>
                     </div>
                 </div>
             </div>
@@ -214,6 +240,10 @@
                         <p id="fireMilestoneTitle" class="text-[9px] uppercase font-bold text-slate-500 tracking-wider">FIRE Milestone</p>
                         <p id="fireMilestoneDisplay" class="text-xs font-black text-slate-500 mt-0.5">Off</p>
                     </div>
+                    <div class="p-2 bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col justify-center col-span-2">
+                        <p class="text-[9px] uppercase font-bold text-rose-400 tracking-wider">Total Taxes Withheld</p>
+                        <p id="totalTaxesDisplay" class="text-xs font-black text-rose-400 mt-0.5">$0</p>
+                    </div>
                 </div>
             </div>
 
@@ -234,7 +264,7 @@
                 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Global Currency Vector (Localização)</label>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Global Currency Vector (Location)</label>
                         <select id="currencySelect" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-xs font-medium h-10">
                             <option value="USD" data-symbol="$" selected>USD ($) - US Dollar</option>
                             <option value="EUR" data-symbol="€">EUR (€) - Euro</option>
@@ -316,54 +346,29 @@
                                 </button>
                             </div>
                         </div>
-                        <p class="text-[9px] text-slate-500 mt-1">The remaining slice is withdrawn from the portfolio.</p>
                     </div>
                 </div>
-                
+
                 <div class="space-y-4">
                     <div class="bg-slate-950/40 border border-slate-800/80 p-4 rounded-xl space-y-3">
                         <div class="flex justify-between items-center border-b border-slate-900 pb-2">
                             <h3 class="text-[10px] font-bold uppercase text-purple-400 tracking-wider">Chronological Stock Liquidations</h3>
-                            <button id="addEventBtn" type="button" class="flex items-center gap-1 text-[10px] font-bold uppercase bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 px-2.5 py-1 rounded-xl border border-purple-500/30 transition-all active:scale-95 select-none">
-                                <span>+ Add Event</span>
+                            <button id="addEventBtn" type="button" class="flex items-center gap-1 text-[10px] font-bold uppercase bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 px-2.5 py-1 rounded-lg border border-purple-500/20 transition">
+                                <span>+ Add Vector</span>
                             </button>
                         </div>
-                        
-                        <div id="eventsContainer" class="space-y-2 max-h-56 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-800">
-                            <div class="event-row space-y-1 bg-slate-950 p-2 rounded-lg border border-slate-900">
-                                <div class="grid grid-cols-4 gap-2 items-center">
-                                    <span class="text-[9px] font-bold uppercase text-slate-500 row-label">Event #1</span>
-                                    <div>
-                                        <label class="block text-[8px] font-bold uppercase text-slate-400 mb-0.5">Year</label>
-                                        <input type="number" class="event-year w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="5" min="0">
-                                    </div>
-                                    <div>
-                                        <label class="block text-[8px] font-bold uppercase text-slate-400 mb-0.5">Gross (<span class="currency-symbol">$</span>)</label>
-                                        <input type="number" class="event-amount w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="0" min="0">
-                                    </div>
-                                    <div>
-                                        <label class="block text-[8px] font-bold uppercase text-slate-400 mb-0.5">Tax (%)</label>
-                                        <input type="number" class="event-tax w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="28" min="0" max="100">
-                                    </div>
-                                </div>
-                                <div class="text-[9px] text-slate-400 text-right font-medium pr-1">
-                                    Net Liquid: <span class="event-net-display font-bold text-purple-400">$0</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <p class="text-[9px] text-slate-500 leading-tight">*Note: Simulates sequential large expenses at specific structural years.</p>
+                        <div id="eventsContainer" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
                     </div>
 
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Market Volatility Vector</label>
-                        <select id="marketRegime" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-xs font-medium h-10">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Market Regime Simulation Architecture</label>
+                        <select id="marketRegime" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-xs font-medium h-10">
                             <option value="stable">Stable Engine (Linear Growth)</option>
                             <option value="volatile">Volatile Engine (Cyclical Shocks)</option>
                         </select>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
                         <div>
                             <div class="flex justify-between items-center mb-1">
                                 <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">FIRE Monthly Goal (<span class="currency-symbol">$</span>)</label>
@@ -381,52 +386,86 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-col justify-end pb-0.5">
-                            <label class="flex items-center space-x-3 cursor-pointer bg-slate-950/60 border border-slate-800 p-2 rounded-xl h-10 select-none transition hover:border-slate-700">
-                                <input type="checkbox" id="enableInflation" class="w-4 h-4 rounded bg-slate-900 border-slate-800 text-purple-500 focus:ring-purple-500/50 focus:ring-offset-0 focus:ring-2">
-                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">Enable Inflation Engine</span>
-                            </label>
-                        </div>
-                    </div>
 
-                    <div id="inflationRateContainer" class="hidden bg-slate-950/40 border border-slate-800/60 p-4 rounded-xl space-y-2">
-                        <div>
-                            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Annual Inflation Rate (%)</label>
-                            <div class="relative">
-                                <input type="number" id="inflationRate" value="2.5" step="0.1" class="w-full p-2.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition text-sm font-medium custom-number-input">
-                                <div class="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 z-10">
-                                    <button type="button" onclick="document.getElementById('inflationRate').stepUp(); document.getElementById('inflationRate').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-purple-400 transition-colors focus:outline-none p-0.5">
-                                        <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
-                                    </button>
-                                    <button type="button" onclick="document.getElementById('inflationRate').stepDown(); document.getElementById('inflationRate').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-purple-400 transition-colors focus:outline-none p-0.5">
-                                        <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
-                                    </button>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-3 cursor-pointer bg-slate-950/60 border border-slate-800 p-2 rounded-xl h-10 select-none transition hover:border-slate-700">
+                                <input type="checkbox" id="enableInflation" class="w-4 h-4 rounded bg-slate-900 border-slate-800 text-purple-500 focus:ring-purple-500 focus:ring-offset-0" checked>
+                                <span class="text-xs font-bold uppercase text-slate-300">Discount Inflation</span>
+                            </label>
+                            
+                            <div id="inflationRateContainer" class="bg-slate-950/50 border border-slate-800 p-2 rounded-xl transition-all duration-200">
+                                <label class="block text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">Annual Inflation Vector (%)</label>
+                                <div class="relative">
+                                    <input type="number" id="inflationRate" value="2.5" step="0.1" class="w-full p-1.5 pr-10 rounded-lg bg-slate-900 border border-slate-800 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-xs font-semibold custom-number-input">
+                                    <div class="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 z-10">
+                                        <button type="button" onclick="document.getElementById('inflationRate').stepUp(); document.getElementById('inflationRate').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-purple-400 transition-colors focus:outline-none p-0.5">
+                                            <svg class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+                                        </button>
+                                        <button type="button" onclick="document.getElementById('inflationRate').stepDown(); document.getElementById('inflationRate').dispatchEvent(new Event('input'));" class="text-slate-500 hover:text-purple-400 transition-colors focus:outline-none p-0.5">
+                                            <svg class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <p id="fireTargetHelp" class="text-[9px] text-slate-400 bg-purple-950/20 border border-purple-900/30 p-2 rounded-xl leading-tight transition-all duration-200 min-h-[32px] font-medium"></p>
-                </div>
 
+                    <p id="fireTargetHelp" class="text-[10px] text-slate-400 leading-normal bg-slate-950/30 p-3 border border-slate-800/50 rounded-xl min-h-[4rem] flex items-center"></p>
+
+                </div>
             </div>
         </details>
+
+        <div class="bg-slate-900/30 border border-slate-800/80 rounded-2xl p-4">
+            <div class="flex justify-between items-center">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400">Inline Data Matrix</h3>
+                <button id="toggleMatrixBtn" type="button" class="text-xs font-bold uppercase bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-1.5 rounded-xl border border-slate-700 transition">
+                    Show Matrix View
+                </button>
+            </div>
+            
+            <div id="matrixContainer" class="hidden mt-4 overflow-x-auto border border-slate-800/60 rounded-xl bg-slate-950/40 max-h-80">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                        <tr class="border-b border-slate-800 bg-slate-900/60 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                            <th class="p-3">Year</th>
+                            <th class="p-3">Invested Capital</th>
+                            <th class="p-3">Nominal Wealth</th>
+                            <th class="p-3">Real Wealth</th>
+                            <th class="p-3">Annual Dividends</th>
+                            <th class="p-3">Taxes Paid</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matrixBody" class="divide-y divide-slate-900 font-medium text-slate-300">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="flex justify-center pt-2">
+            <button id="downloadPdfBtn" type="button" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-sm font-black uppercase tracking-wider shadow-xl shadow-purple-900/20 transform hover:-translate-y-0.5 transition-all outline-none focus:ring-4 focus:ring-purple-500/30 flex items-center justify-center gap-3">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                Export Executive Forecasting Ledger (PDF)
+            </button>
+        </div>
 
     </div>
 
     <script>
-        const ctx = document.getElementById('wealthChart').getContext('2d');
-        let wealthChart;
-        let eventCounter = 1;
-
         const countryTaxes = {
             "PT": { tax: 28, hasTax: "yes" },
             "US": { tax: 15, hasTax: "yes" },
             "UK": { tax: 20, hasTax: "yes" },
             "DE": { tax: 26.375, hasTax: "yes" }
         };
+        let wealthChart = null;
+        let eventCounter = 0;
+        let exportDataMatrix = [];
 
         function initChart() {
+            const ctx = document.getElementById('wealthChart').getContext('2d');
             wealthChart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -444,16 +483,16 @@
                     maintainAspectRatio: false,
                     interaction: { mode: 'index', intersect: false },
                     plugins: {
-                        legend: { 
+                        legend: {
                             position: 'bottom',
-                            labels: { color: '#94a3b8', font: { size: 10, weight: '600' }, boxWidth: 24, boxHeight: 2, usePointStyle: false } 
+                            labels: { color: '#94a3b8', font: { size: 10, weight: '600' }, boxWidth: 24, boxHeight: 2 }
                         },
                         tooltip: {
                             backgroundColor: '#0f172a', titleColor: '#94a3b8', bodyColor: '#f8fafc', borderColor: '#334155', borderWidth: 1, padding: 10, borderRadius: 6,
                             callbacks: {
                                 label: function(context) {
                                     let label = context.dataset.label || '';
-                                    if (label) { label += ': '; }
+                                    if (label) label += ': ';
                                     if (context.parsed.y !== null) {
                                         let currentCurrency = document.getElementById('currencySelect').value || 'USD';
                                         label += new Intl.NumberFormat('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 }).format(context.parsed.y);
@@ -465,49 +504,32 @@
                     },
                     scales: {
                         x: { grid: { color: 'rgba(51, 65, 85, 0.05)' }, ticks: { color: '#64748b', font: { size: 9 } } },
-                        y: { 
-                            grid: { color: 'rgba(51, 65, 85, 0.05)' }, 
-                            ticks: { 
-                                color: '#64748b', 
-                                font: { size: 9 }, 
-                                callback: function(value) { 
-                                    let symbol = document.getElementById('currencySelect').options[document.getElementById('currencySelect').selectedIndex].getAttribute('data-symbol') || '$';
-                                    if (value >= 1e6) return symbol + (value / 1e6).toFixed(1) + 'M';
-                                    if (value >= 1e3) return symbol + (value / 1e3).toFixed(0) + 'k'; 
-                                    return symbol + value;
-                                } 
-                            } 
-                        }
+                        y: { grid: { color: 'rgba(51, 65, 85, 0.05)' }, ticks: { color: '#64748b', font: { size: 9 } } }
                     }
                 }
             });
         }
 
-        document.getElementById('addEventBtn').addEventListener('click', function() {
+        document.getElementById('addEventBtn').addEventListener('click', () => {
             eventCounter++;
             const container = document.getElementById('eventsContainer');
             const newRow = document.createElement('div');
-            newRow.className = "event-row space-y-1 bg-slate-950 p-2 rounded-lg border border-slate-900";
-            
+            newRow.className = "bg-slate-900 border border-slate-800 p-2.5 rounded-xl space-y-1.5 text-xs relative";
             newRow.innerHTML = `
-                <div class="grid grid-cols-4 gap-2 items-center">
-                    <span class="text-[9px] font-bold uppercase text-slate-500 row-label">Event #${eventCounter}</span>
-                    <div>
-                        <input type="number" class="event-year w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="${eventCounter * 5}" min="0">
-                    </div>
-                    <div>
-                        <input type="number" class="event-amount w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="0" min="0">
-                    </div>
-                    <div>
-                        <input type="number" class="event-tax w-full p-1 bg-slate-900 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="28" min="0" max="100">
-                    </div>
+                <button type="button" class="absolute right-2 top-2 text-slate-500 hover:text-red-400 font-bold focus:outline-none transition-colors" onclick="this.parentElement.remove(); calculateSimulation();">✕</button>
+                <div class="grid grid-cols-3 gap-2 pr-4">
+                    <div><span class="block text-[8px] uppercase tracking-wider text-slate-500 font-bold mb-0.5">Year</span></div>
+                    <div><span class="block text-[8px] uppercase tracking-wider text-slate-500 font-bold mb-0.5">Gross Stock Vol</span></div>
+                    <div><span class="block text-[8px] uppercase tracking-wider text-slate-500 font-bold mb-0.5">Tax rate (%)</span></div>
                 </div>
-                <div class="text-[9px] text-slate-400 text-right font-medium pr-1">
-                    Net Liquid: <span class="event-net-display font-bold text-purple-400">$0</span>
+                <div class="grid grid-cols-3 gap-2 pr-4">
+                    <div><input type="number" class="event-year w-full p-1 bg-slate-950 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="${eventCounter * 5}" min="0"></div>
+                    <div><input type="number" class="event-amount w-full p-1 bg-slate-950 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="0" min="0"></div>
+                    <div><input type="number" class="event-tax w-full p-1 bg-slate-950 border border-slate-800 text-white rounded focus:ring-1 focus:ring-purple-500 outline-none text-xs custom-number-input" value="28" min="0" max="100"></div>
                 </div>
+                <div class="text-[9px] text-slate-400 text-right font-medium pr-1">Net Liquid: <span class="event-net-display font-bold text-purple-400">$0</span></div>
             `;
             container.appendChild(newRow);
-
             newRow.querySelectorAll('input').forEach(input => {
                 input.addEventListener('input', calculateSimulation);
                 input.addEventListener('change', calculateSimulation);
@@ -521,9 +543,7 @@
                 const config = countryTaxes[countryCode];
                 document.getElementById('dividendTax').value = config.tax;
                 const radioToCheck = document.querySelector(`input[name="hasTax"][value="${config.hasTax}"]`);
-                if (radioToCheck) {
-                    radioToCheck.checked = true;
-                }
+                if (radioToCheck) radioToCheck.checked = true;
                 calculateSimulation();
             }
         });
@@ -531,7 +551,6 @@
         function calculateSimulation() {
             const activeSymbol = document.getElementById('currencySelect').options[document.getElementById('currencySelect').selectedIndex].getAttribute('data-symbol') || '$';
             const currentCurrency = document.getElementById('currencySelect').value || 'USD';
-            
             document.querySelectorAll('.currency-symbol').forEach(el => el.innerText = activeSymbol);
 
             const initialCapital = Math.max(0, parseFloat(document.getElementById('initialCapital').value) || 0);
@@ -543,52 +562,22 @@
             const years = Math.max(1, Math.min(100, parseInt(document.getElementById('years').value) || 0));
             const terRate = Math.max(0, Math.min(20, parseFloat(document.getElementById('terRate').value) || 0));
             const brokerageFee = Math.max(0, Math.min(20, parseFloat(document.getElementById('brokerageFee').value) || 0));
+            const compoundFreq = parseInt(document.getElementById('compoundingFrequency').value) || 12;
 
-            const liquidations = [];
-            const activeRows = document.querySelectorAll('.event-row');
-            activeRows.forEach(row => {
-                const yearField = row.querySelector('.event-year');
-                const amountField = row.querySelector('.event-amount');
-                const taxField = row.querySelector('.event-tax');
-                const netDisplay = row.querySelector('.event-net-display');
-                
-                if (yearField && amountField) {
-                    const gross = Math.max(0, parseFloat(amountField.value) || 0);
-                    const taxRate = Math.max(0, Math.min(100, parseFloat(taxField ? taxField.value : 0) || 0));
-                    const net = gross * (1 - taxRate / 100);
-                    
-                    liquidations.push({
-                        year: Math.max(0, parseInt(yearField.value) || 0),
-                        gross: gross,
-                        tax: taxRate,
-                        net: net
-                    });
-
-                    if (netDisplay) {
-                        netDisplay.innerText = new Intl.NumberFormat('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 }).format(net);
-                    }
-                }
-            });
-
-            const selectedTaxOption = document.querySelector('input[name="hasTax"]:checked').value;
-            const taxContainer = document.getElementById('customTaxContainer');
+            const hasTaxOption = document.querySelector('input[name="hasTax"]:checked').value;
             let dynamicTaxRate = 0;
-            if (selectedTaxOption === 'yes') {
-                taxContainer.classList.remove('hidden');
+            if (hasTaxOption === 'yes') {
                 dynamicTaxRate = Math.max(0, Math.min(100, parseFloat(document.getElementById('dividendTax').value) || 0));
+                document.getElementById('customTaxContainer').classList.remove('hidden');
             } else {
-                taxContainer.classList.add('hidden');
-                dynamicTaxRate = 0;
-                if(document.getElementById('countryPreset').value !== 'custom') {
-                    document.getElementById('countryPreset').value = 'custom';
-                }
+                document.getElementById('customTaxContainer').classList.add('hidden');
             }
 
-            const selectedStrategy = document.querySelector('input[name="divStrategy"]:checked').value;
+            const divStrategy = document.querySelector('input[name="divStrategy"]:checked').value;
             const reinvestContainer = document.getElementById('customReinvestContainer');
             let dividendReinvest = 100;
 
-            if (selectedStrategy === 'manual') {
+            if (divStrategy === 'manual') {
                 reinvestContainer.classList.remove('hidden');
                 dividendReinvest = Math.max(0, Math.min(100, parseFloat(document.getElementById('dividendReinvest').value) || 0));
                 document.getElementById('cashFlowDisclaimer').innerText = `*Note: Simulation assumes a ${dynamicTaxRate}% fiscal retention, reinvesting only ${dividendReinvest}% of the net remainder.`;
@@ -603,13 +592,13 @@
             const enableInflation = document.getElementById('enableInflation').checked;
             const inflationRate = Math.max(-99, Math.min(2000, parseFloat(document.getElementById('inflationRate').value) || 0));
             const inflationContainer = document.getElementById('inflationRateContainer');
-            
+
             if (enableInflation) {
-                inflationContainer.classList.remove('hidden');
+                inflationContainer.style.display = 'block';
                 document.getElementById('realWealthTitle').className = "text-[9px] uppercase font-bold text-cyan-400 tracking-wider";
                 document.getElementById('realValueDisplay').className = "text-xs font-black text-cyan-400 mt-0.5";
             } else {
-                inflationContainer.classList.add('hidden');
+                inflationContainer.style.display = 'none';
                 document.getElementById('realWealthTitle').className = "text-[9px] uppercase font-bold text-slate-500 tracking-wider";
                 document.getElementById('realValueDisplay').className = "text-xs font-black text-slate-500/50 mt-0.5";
             }
@@ -618,62 +607,103 @@
             if (enableInflation && inflationRate > 0) {
                 const finalInflationFactor = Math.pow(1 + (inflationRate / 100), years);
                 const nominalRequired = fireTarget * finalInflationFactor;
-                fireTargetHelp.innerHTML = `🛡️ <b>Real Target:</b> To maintain the purchasing power of <span class="text-purple-400 font-bold">${activeSymbol}${fireTarget.toLocaleString('en-US')}</span> from today in Year ${years} (with an inflation rate of ${inflationRate}%), you will require a monthly nominal return of <span class="text-purple-400 font-bold">${activeSymbol}${Math.round(nominalRequired).toLocaleString('en-US')}</span>.`;
+                // CORREÇÃO DOS ESPAÇOS FORMATADOS ABAIXO PARA IMPEDIR AGLUTINAÇÃO TEXTUAL
+                fireTargetHelp.innerHTML = `🛡️ <b>Real Target:</b> To maintain the purchasing power of <span class="text-purple-400 font-bold">${activeSymbol} ${fireTarget.toLocaleString('en-US')}</span> from today in Year ${years} (with an inflation rate of ${inflationRate}%), you will require a monthly nominal return of <span class="text-purple-400 font-bold">${activeSymbol} ${Math.round(nominalRequired).toLocaleString('en-US')}</span>.`;
             } else {
-                fireTargetHelp.innerHTML = `⚙️ Your target is fixed at <span class="text-slate-300 font-bold">${activeSymbol}${fireTarget.toLocaleString('en-US')}</span> nominal per month. The inflation engine is disabled or null.`;
+                fireTargetHelp.innerHTML = `⚙️ Your target is fixed at <span class="text-slate-300 font-bold">${activeSymbol} ${fireTarget.toLocaleString('en-US')}</span> nominal per month. The inflation engine is disabled or null.`;
             }
+
+            let liquidations = [];
+            document.querySelectorAll('#eventsContainer > div').forEach(row => {
+                const y = parseInt(row.querySelector('.event-year').value) || 0;
+                const g = Math.max(0, parseFloat(row.querySelector('.event-amount').value) || 0);
+                const t = Math.max(0, Math.min(100, parseFloat(row.querySelector('.event-tax').value) || 0));
+                const net = g * (1 - (t / 100));
+     
+                row.querySelector('.event-net-display').innerText = activeSymbol + Math.round(net).toLocaleString('en-US');
+                if (g > 0) {
+                    liquidations.push({ year: y, gross: g, taxRate: t, net: net });
+                }
+            });
 
             let nominalBalance = initialCapital;
             let totalInvested = initialCapital;
             let currentMonthlySalary = grossSalary;
-            let fireYearReached = fireTarget > 0 ? "Never" : "Off";
+            let totalWithheldTaxes = 0;
+
             let investedHistory = [initialCapital];
             let nominalHistory = [initialCapital];
             let realHistory = [initialCapital];
-            
             let nominalDivHistory = [0];
             let realDivHistory = [0];
-            let labels = ['Year 0'];
+            let taxesPaidHistory = [0];
+            let labels = ['Initial'];
 
-            const monthlyDividendRate = Math.pow(1 + (dividendYield / 100), 1 / 12) - 1;
-            const taxFactor = 1 - (dynamicTaxRate / 100);
-            const totalFeesVector = (terRate / 100) + (brokerageFee / 100);
+            let fireYearReached = "Never";
+            if (fireTarget <= 0) fireYearReached = "Off";
+
+            exportDataMatrix = [{
+                year: 0,
+                invested: totalInvested,
+                nominalWealth: nominalBalance,
+                realWealth: nominalBalance,
+                annualDividends: 0,
+                taxesPaid: 0
+            }];
 
             for (let y = 1; y <= years; y++) {
+                let monthlyContribution = currentMonthlySalary * (investRate / 100);
                 let dividendsThisYear = 0;
-                let annualGrowthNode = (marketGrowth / 100) - totalFeesVector;
-                
+                let annualTaxPaidThisYear = 0;
+
+                let monthsPerPeriod = 12 / compoundFreq;
+                let periodGrowthRate = (marketGrowth / 100) / compoundFreq;
+                let periodDivYield = (dividendYield / 100) / compoundFreq;
+                let periodTER = (terRate / 100) / compoundFreq;
+                let periodBrokerage = (brokerageFee / 100) / compoundFreq;
+
                 if (marketRegime === 'volatile') {
-                    annualGrowthNode += Math.sin(y * 1.1) * 0.07 - 0.02;
+                    let macroShockFactor = 1.0;
+                    if (y % 7 === 0) macroShockFactor = -2.8; 
+                    else if (y % 4 === 0) macroShockFactor = 1.9;
+                    periodGrowthRate = periodGrowthRate * macroShockFactor;
                 }
-                const monthlyGrowthRate = Math.pow(1 + annualGrowthNode, 1 / 12) - 1;
 
-                for (let m = 1; m <= 12; m++) {
-                    let monthlyContribution = currentMonthlySalary * (investRate / 100);
-                    let baseBalance = nominalBalance + monthlyContribution;
-                    let generatedGrowth = baseBalance * monthlyGrowthRate;
-                    let grossDividends = baseBalance * monthlyDividendRate;
-                    let netDividends = grossDividends * taxFactor;
+                for (let period = 1; period <= compoundFreq; period++) {
+                    let contributionThisPeriod = monthlyContribution * monthsPerPeriod;
+                    let baseBalance = nominalBalance + contributionThisPeriod;
 
-                    dividendsThisYear += netDividends;
+                    let feeDrag = baseBalance * (periodTER + periodBrokerage);
+                    baseBalance = Math.max(0, baseBalance - feeDrag);
+                    let generatedGrowth = baseBalance * periodGrowthRate;
+                    let grossDividends = baseBalance * periodDivYield;
+
+                    let periodTax = grossDividends * (dynamicTaxRate / 100);
+                    let netDividends = grossDividends - periodTax;
                     
+                    dividendsThisYear += grossDividends;
+                    annualTaxPaidThisYear += periodTax;
+                    totalWithheldTaxes += periodTax;
                     let dynamicReinvestmentFund = netDividends * (dividendReinvest / 100);
                     nominalBalance = baseBalance + generatedGrowth + dynamicReinvestmentFund;
-                    totalInvested += monthlyContribution;
+                    totalInvested += contributionThisPeriod;
                 }
 
                 liquidations.forEach(event => {
                     if (y === event.year) {
+                        let appliedLiquidationTax = event.gross * (event.taxRate / 100);
                         nominalBalance = Math.max(0, nominalBalance - event.gross);
+                        annualTaxPaidThisYear += appliedLiquidationTax;
+                        totalWithheldTaxes += appliedLiquidationTax;
                     }
                 });
 
                 currentMonthlySalary = currentMonthlySalary * (1 + (salaryProgression / 100));
                 let accumulatedInflationFactor = Math.pow(1 + (inflationRate / 100), y);
                 if (accumulatedInflationFactor <= 0) accumulatedInflationFactor = 0.0001;
+
                 let currentRealBalance = nominalBalance / accumulatedInflationFactor;
                 let currentRealDividends = dividendsThisYear / accumulatedInflationFactor;
-
                 const targetDividendsToCheck = enableInflation ? currentRealDividends : dividendsThisYear;
                 if (fireYearReached === "Never" && (targetDividendsToCheck / 12) >= fireTarget) {
                     fireYearReached = `Year ${y}`;
@@ -684,55 +714,93 @@
                 realHistory.push(Math.round(currentRealBalance < 0 ? 0 : currentRealBalance));
                 nominalDivHistory.push(Math.round(dividendsThisYear));
                 realDivHistory.push(Math.round(currentRealDividends));
+                taxesPaidHistory.push(Math.round(annualTaxPaidThisYear));
                 labels.push(`Year ${y}`);
+
+                exportDataMatrix.push({
+                    year: y,
+                    invested: Math.round(totalInvested),
+                    nominalWealth: Math.round(nominalBalance),
+                    realWealth: Math.round(currentRealBalance),
+                    annualDividends: Math.round(dividendsThisYear),
+                    taxesPaid: Math.round(annualTaxPaidThisYear)
+                });
             }
 
             if (fireYearReached === "Never" && fireTarget > 0) {
                 let deepNominalBalance = nominalBalance;
                 let deepSalary = currentMonthlySalary;
-                
                 for (let dy = years + 1; dy <= 1000; dy++) {
                     let deepDividendsThisYear = 0;
-                    let annualGrowthNode = (marketGrowth / 100) - totalFeesVector;
+                    let deepMonthlyContribution = deepSalary * (investRate / 100);
+
+                    let monthsPerPeriod = 12 / compoundFreq;
+                    let periodGrowthRate = (marketGrowth / 100) / compoundFreq;
+                    let periodDivYield = (dividendYield / 100) / compoundFreq;
+                    let periodTER = (terRate / 100) / compoundFreq;
+                    let periodBrokerage = (brokerageFee / 100) / compoundFreq;
                     if (marketRegime === 'volatile') {
-                        annualGrowthNode += Math.sin(dy * 1.1) * 0.07 - 0.02;
-                    }
-                    const monthlyGrowthRate = Math.pow(1 + annualGrowthNode, 1 / 12) - 1;
-
-                    for (let dm = 1; dm <= 12; dm++) {
-                        let monthlyContribution = deepSalary * (investRate / 100);
-                        let baseBalance = deepNominalBalance + monthlyContribution;
-                        let generatedGrowth = baseBalance * monthlyGrowthRate;
-                        let grossDividends = baseBalance * monthlyDividendRate;
-                        let netDividends = grossDividends * taxFactor;
-
-                        deepDividendsThisYear += netDividends;
-                        deepNominalBalance = baseBalance + generatedGrowth + (netDividends * (dividendReinvest / 100));
+                        let macroShockFactor = (dy % 7 === 0) ? -2.8 : ((dy % 4 === 0) ? 1.9 : 1.0);
+                        periodGrowthRate = periodGrowthRate * macroShockFactor;
                     }
 
-                    liquidations.forEach(event => {
-                        if (dy === event.year) {
-                            deepNominalBalance = Math.max(0, deepNominalBalance - event.gross);
-                        }
-                    });
-                    deepSalary = deepSalary * (1 + (salaryProgression / 100));
-                    
+                    for (let p = 1; p <= compoundFreq; p++) {
+                        let cont = deepMonthlyContribution * monthsPerPeriod;
+                        let b = deepNominalBalance + cont;
+                        let fDrag = b * (periodTER + periodBrokerage);
+                        b = Math.max(0, b - fDrag);
+                        let gG = b * periodGrowthRate;
+                        let gD = b * periodDivYield;
+                        let pT = gD * (dynamicTaxRate / 100);
+                        let nD = gD - pT;
+
+                        deepNominalBalance = b + gG + (nD * (dividendReinvest / 100));
+                    }
+                    deepDividendsThisYear = deepNominalBalance * (dividendYield / 100);
                     let deepInflationFactor = Math.pow(1 + (inflationRate / 100), dy);
-                    if (deepInflationFactor <= 0) deepInflationFactor = 0.0001;
                     let deepRealDividends = deepDividendsThisYear / deepInflationFactor;
-
-                    const deepTargetDividendsToCheck = enableInflation ? deepRealDividends : deepDividendsThisYear;
-
-                    if ((deepTargetDividendsToCheck / 12) >= fireTarget) {
+                    if (( (enableInflation ? deepRealDividends : deepDividendsThisYear) / 12) >= fireTarget) {
                         fireYearReached = `Year ${dy}`;
                         break;
                     }
-                    if (deepNominalBalance === Infinity || deepNominalBalance > 1e20) {
+                    deepSalary = deepSalary * (1 + (salaryProgression / 100));
+                    if (deepNominalBalance <= 0 || dy === 1000) {
                         fireYearReached = "> 1000 Years";
                         break;
                     }
                 }
             }
+
+            const finalNominal = nominalHistory[nominalHistory.length - 1];
+            const finalReal = realHistory[realHistory.length - 1];
+            const finalNominalDivs = nominalDivHistory[nominalDivHistory.length - 1];
+            document.getElementById('nominalValueDisplay').innerText = finalNominal.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 });
+            document.getElementById('realValueDisplay').innerText = enableInflation ? finalReal.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 }) : "Off";
+            document.getElementById('annualDivDisplay').innerText = finalNominalDivs.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 });
+            document.getElementById('totalTaxesDisplay').innerText = totalWithheldTaxes.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 });
+
+            document.getElementById('fireMilestoneDisplay').innerText = fireYearReached;
+            if (fireYearReached !== "Off" && fireYearReached !== "Never" && fireYearReached !== "> 1000 Years") {
+                document.getElementById('fireMilestoneDisplay').className = "text-xs font-black text-purple-400 mt-0.5";
+            } else {
+                document.getElementById('fireMilestoneDisplay').className = "text-xs font-black text-slate-500 mt-0.5";
+            }
+
+            const matrixBody = document.getElementById('matrixBody');
+            matrixBody.innerHTML = '';
+            exportDataMatrix.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-900/40 transition-colors";
+                tr.innerHTML = `
+                    <td class="p-3 text-slate-400 font-bold">Y${row.year}</td>
+                    <td class="p-3">${row.invested.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 })}</td>
+                    <td class="p-3 text-emerald-400 font-semibold">${row.nominalWealth.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 })}</td>
+                    <td class="p-3 text-cyan-400 font-semibold">${enableInflation ? row.realWealth.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 }) : "Off"}</td>
+                    <td class="p-3 text-amber-400">${row.annualDividends.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 })}</td>
+                    <td class="p-3 text-rose-400">${row.taxesPaid.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 })}</td>
+                `;
+                matrixBody.appendChild(tr);
+            });
 
             wealthChart.data.labels = labels;
             wealthChart.data.datasets[0].data = investedHistory;
@@ -740,29 +808,187 @@
             wealthChart.data.datasets[2].data = realHistory;
             wealthChart.data.datasets[3].data = nominalDivHistory;
             wealthChart.data.datasets[4].data = realDivHistory;
-
-            wealthChart.setDatasetVisibility(2, enableInflation); 
-            wealthChart.setDatasetVisibility(4, enableInflation); 
             wealthChart.update();
-
-            const finalNominal = nominalHistory[nominalHistory.length - 1];
-            const finalReal = realHistory[realHistory.length - 1];
-            const finalNominalDivs = nominalDivHistory[nominalDivHistory.length - 1];
-
-            document.getElementById('nominalValueDisplay').innerText = finalNominal.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 });
-            document.getElementById('realValueDisplay').innerText = enableInflation ? finalReal.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 }) : "Off";
-            document.getElementById('annualDivDisplay').innerText = finalNominalDivs.toLocaleString('en-US', { style: 'currency', currency: currentCurrency, maximumFractionDigits: 0 });
-            
-            document.getElementById('fireMilestoneDisplay').innerText = fireYearReached;
-            if (fireYearReached !== "Off" && fireYearReached !== "Never" && fireYearReached !== "> 1000 Years") {
-                document.getElementById('fireMilestoneDisplay').className = "text-xs font-black text-purple-400 mt-0.5";
-            } else {
-                document.getElementById('fireMilestoneDisplay').className = "text-xs font-black text-slate-500 mt-0.5";
-            }
         }
 
-        initChart();
-        calculateSimulation();
+        document.getElementById('toggleMatrixBtn').addEventListener('click', function() {
+            const container = document.getElementById('matrixContainer');
+            if (container.classList.contains('hidden')) {
+                container.classList.remove('hidden');
+                this.innerText = "Hide Matrix View";
+            } else {
+                container.classList.add('hidden');
+                this.innerText = "Show Matrix View";
+            }
+        });
+
+        document.getElementById('downloadPdfBtn').addEventListener('click', function() {
+            if (exportDataMatrix.length === 0) return;
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const currentCurrency = document.getElementById('currencySelect').value || 'USD';
+            const enableInflation = document.getElementById('enableInflation').checked;
+
+            // Header Meta Data Setup
+            doc.setFillColor(15, 23, 42);
+            doc.rect(0, 0, 210, 38, 'F');
+            
+            doc.setTextColor(34, 211, 238);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(20);
+            doc.text("QUANTUM WEALTH ENGINE", 14, 16);
+            
+            doc.setTextColor(148, 163, 184);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            doc.text("EXECUTIVE FORECASTING LEDGER & MACRO ANALYSIS MATRIX", 14, 23);
+            doc.text(`Generated Currency: ${currentCurrency} | Inflation Discounted: ${enableInflation ? 'YES' : 'NO'}`, 14, 28);
+            doc.setDrawColor(51, 65, 85);
+            doc.setLineWidth(0.5);
+            doc.line(14, 33, 196, 33);
+
+            // Table Header Setup
+            let yPosition = 50;
+            doc.setFillColor(30, 41, 59);
+            doc.rect(14, yPosition, 182, 8, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "bold");
+            doc.text("Year", 16, yPosition + 5.5);
+            doc.text("Invested Cap.", 32, yPosition + 5.5);
+            doc.text("Nominal Wealth", 68, yPosition + 5.5);
+            doc.text("Real Wealth", 104, yPosition + 5.5);
+            doc.text("Annual Divs", 140, yPosition + 5.5);
+            doc.text("Taxes Paid", 172, yPosition + 5.5);
+            
+            yPosition += 8;
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(51, 65, 85);
+
+            exportDataMatrix.forEach((row, idx) => {
+                if (yPosition > 275) {
+                    doc.addPage();
+                    yPosition = 20;
+                    
+                    doc.setFillColor(30, 41, 59);
+                    doc.rect(14, yPosition, 182, 8, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFont("helvetica", "bold");
+                    doc.text("Year", 16, yPosition + 5.5);
+                    doc.text("Invested Cap.", 32, yPosition + 5.5);
+                    doc.text("Nominal Wealth", 68, yPosition + 5.5);
+                    doc.text("Real Wealth", 104, yPosition + 5.5);
+                    doc.text("Annual Divs", 140, yPosition + 5.5);
+                    doc.text("Taxes Paid", 172, yPosition + 5.5);
+                    yPosition += 8;
+                    doc.setFont("helvetica", "normal");
+                }
+
+                if (idx % 2 === 0) {
+                    doc.setFillColor(248, 250, 252);
+                    doc.rect(14, yPosition, 182, 6.5, 'F');
+                }
+
+                doc.setTextColor(100, 116, 139);
+                doc.setFont("helvetica", "bold");
+                doc.text(`Y${row.year}`, 16, yPosition + 4.5);
+                
+                doc.setFont("helvetica", "normal");
+                doc.setTextColor(15, 23, 42);
+                doc.text(row.invested.toLocaleString('en-US'), 32, yPosition + 4.5);
+                
+                doc.setTextColor(16, 185, 129);
+                doc.text(row.nominalWealth.toLocaleString('en-US'), 68, yPosition + 4.5);
+                doc.setTextColor(6, 182, 212);
+                doc.text(enableInflation ? row.realWealth.toLocaleString('en-US') : "Off", 104, yPosition + 4.5);
+                doc.setTextColor(245, 158, 11);
+                doc.text(row.annualDividends.toLocaleString('en-US'), 140, yPosition + 4.5);
+                doc.setTextColor(244, 63, 94);
+                doc.text(row.taxesPaid.toLocaleString('en-US'), 172, yPosition + 4.5);
+                doc.setDrawColor(226, 232, 240);
+                doc.setLineWidth(0.1);
+                doc.line(14, yPosition + 6.5, 196, yPosition + 6.5);
+                
+                yPosition += 6.5;
+            });
+
+            // --- ADIÇÃO DA SEGUNDA PÁGINA AUTOMATIZADA: ARQUIVO DE DIRETRIZES DO UTILIZADOR ---
+            doc.addPage();
+            doc.setFillColor(15, 23, 42);
+            doc.rect(0, 0, 210, 38, 'F');
+            
+            doc.setTextColor(34, 211, 238);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(18);
+            doc.text("QUANTUM WEALTH ENGINE", 14, 16);
+            
+            doc.setTextColor(148, 163, 184);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            doc.text("SYSTEMATIC CONFIGURATION AUDIT TRAIL", 14, 23);
+            doc.text("Comprehensive structural summary of simulation parameters declared by the developer.", 14, 28);
+            doc.setDrawColor(51, 65, 85);
+            doc.setLineWidth(0.5);
+            doc.line(14, 33, 196, 33);
+
+            let paramY = 55;
+            const grabSelectText = (id) => {
+                const element = document.getElementById(id);
+                return element ? element.options[element.selectedIndex].text : 'N/A';
+            };
+
+            const systemAuditMatrix = [
+                { parameterName: "Gross Monthly Salary Base", parameterValue: (document.getElementById('grossSalary')?.value || '0') + " " + currentCurrency },
+                { parameterName: "Annual Salary Progression Vector", parameterValue: (document.getElementById('salaryProgression')?.value || '0') + "%" },
+                { parameterName: "Salary Allocated Invest Rate", parameterValue: (document.getElementById('investRate')?.value || '0') + "%" },
+                { parameterName: "Initial Capital Infusion Core", parameterValue: (document.getElementById('initialCapital')?.value || '0') + " " + currentCurrency },
+                { parameterName: "Market Portfolio Growth Trajectory", parameterValue: (document.getElementById('marketGrowth')?.value || '0') + "%" },
+                { parameterName: "Asset Base Historical Dividend Yield", parameterValue: (document.getElementById('dividendYield')?.value || '0') + "%" },
+                { parameterName: "Compounding Intermittent Frequency", parameterValue: grabSelectText('compoundingFrequency') },
+                { parameterName: "Total Expense Ratio (TER Fund Drag)", parameterValue: (document.getElementById('terRate')?.value || '0') + "%" },
+                { parameterName: "Brokerage Platform Custody Leakage", parameterValue: (document.getElementById('brokerageFee')?.value || '0') + "%" },
+                { parameterName: "Simulation Timeline Horizon", parameterValue: (document.getElementById('years')?.value || '0') + " Financial Years" },
+                { parameterName: "Jurisdictional Policy Location Preset", parameterValue: grabSelectText('countryPreset') },
+                { parameterName: "Dividend Flat Tax Revenue Withholding", parameterValue: (document.getElementById('dividendTax')?.value || '0') + "%" },
+                { parameterName: "Dividend Allocation Optimization Strategy", parameterValue: document.querySelector('input[name="divStrategy"]:checked')?.value === 'etf' ? "Auto-Reinvest (Accumulating ETF Framework)" : "Manual Outflow / Payout Extraction" },
+                { parameterName: "FIRE Milestone Net Target Threshold", parameterValue: (document.getElementById('fireTarget')?.value || '0') + " " + currentCurrency + " / Month" },
+                { parameterName: "CPI Inflation Indexing Configuration", parameterValue: document.getElementById('enableInflation')?.checked ? `Discount Inflation Enabled (${document.getElementById('inflationRate')?.value || '0'}%)` : "Disabled (Linear Value Engine)" },
+                { parameterName: "Market Regime Simulation Architecture", parameterValue: grabSelectText('marketRegime') }
+            ];
+
+            systemAuditMatrix.forEach((item, index) => {
+                if (index % 2 === 0) {
+                    doc.setFillColor(248, 250, 252);
+                    doc.rect(14, paramY - 5, 182, 7.5, 'F');
+                }
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(9);
+                doc.setTextColor(71, 85, 105);
+                doc.text(item.parameterName, 18, paramY);
+                
+                doc.setFont("helvetica", "normal");
+                doc.setTextColor(15, 23, 42);
+                doc.text(item.parameterValue, 125, paramY);
+                
+                doc.setDrawColor(226, 232, 240);
+                doc.setLineWidth(0.1);
+                doc.line(14, paramY + 2.5, 196, paramY + 2.5);
+                paramY += 7.5;
+            });
+
+            // Footer branding execution
+            const totalPages = doc.internal.getNumberOfPages();
+            for(let i = 1; i <= totalPages; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setTextColor(148, 163, 184);
+                doc.text("Quantum Wealth Engine Ledger - Confidentially Compiled", 14, 290);
+                doc.text(`Page ${i} of ${totalPages}`, 180, 290);
+            }
+
+            doc.save(`quantum_wealth_ledger_${currentCurrency}.pdf`);
+        });
 
         (function() {
             const branding = document.createElement('div');
@@ -783,6 +1009,9 @@
             control.addEventListener('input', calculateSimulation);
             control.addEventListener('change', calculateSimulation);
         });
+
+        initChart();
+        calculateSimulation();
     </script>
 </body>
 </html>
