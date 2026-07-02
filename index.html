@@ -608,7 +608,7 @@
                 const finalInflationFactor = Math.pow(1 + (inflationRate / 100), years);
                 const nominalRequired = fireTarget * finalInflationFactor;
                 // CORREÇÃO DOS ESPAÇOS FORMATADOS ABAIXO PARA IMPEDIR AGLUTINAÇÃO TEXTUAL
-                fireTargetHelp.innerHTML = `🛡️ <b>Real Target:</b> To maintain the purchasing power of <span class="text-purple-400 font-bold">${activeSymbol} ${fireTarget.toLocaleString('en-US')}</span> from today in Year ${years} (with an inflation rate of ${inflationRate}%), you will require a monthly nominal return of <span class="text-purple-400 font-bold">${activeSymbol} ${Math.round(nominalRequired).toLocaleString('en-US')}</span>.`;
+                fireTargetHelp.innerHTML = `<div class="leading-relaxed">🛡️ <span class="font-bold text-slate-300">Real Target:</span> To maintain the purchasing power of <span class="text-purple-400 font-bold">${activeSymbol}${fireTarget.toLocaleString('en-US')}</span> from today in Year ${years} (with an inflation rate of ${inflationRate}%), you will require a monthly nominal return of <span class="text-purple-400 font-bold">${activeSymbol}${Math.round(nominalRequired).toLocaleString('en-US')}</span>.</div>`;
             } else {
                 fireTargetHelp.innerHTML = `⚙️ Your target is fixed at <span class="text-slate-300 font-bold">${activeSymbol} ${fireTarget.toLocaleString('en-US')}</span> nominal per month. The inflation engine is disabled or null.`;
             }
